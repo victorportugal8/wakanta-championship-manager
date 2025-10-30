@@ -1,0 +1,26 @@
+import dadosCampeonato from '../data/dadosCampeonato.json';
+import { calcularClassificacao } from '../utils/calculadoraClassificao';
+
+function Tabela() {
+    // A tabela é calculada uma única vez quando o componente é renderizado
+    const tabelaFinal = calcularClassificacao(dadosCampeonato);
+
+    return (
+        <table className="tabela-campeonato">
+            <thead>
+                <tr><th>Pos</th><th>Time</th><th>P</th><th>J</th><th>V</th><th>E</th><th>D</th><th>GP</th><th>GC</th><th>SG</th></tr>
+            </thead>
+            <tbody>
+                {tabelaFinal.map((time, index) => (
+                    <tr key={time.id}>
+                        <td>{index + 1}</td>
+                        <td>{time.nome}</td>
+                        <td>{time.P}</td>
+                        {/* ... e o resto das colunas */}
+                    </tr>
+                ))}
+            </tbody>
+        </table>
+    );
+}
+export default Tabela;
