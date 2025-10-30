@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 // Importa os dados antigos diretamente (pode ser o que está na sua pasta data/)
 import dadosAntigos from '../data/campeonato.json'; 
 import { calcularClassificacao } from '../utils/calculadora';
@@ -42,12 +42,12 @@ export default function AdminTool() {
         // 3. Montar o objeto da nova partida
         const novoMatchObjeto = {
             id: proximoId,
-            time_casa_id: parseInt(newMatch.timeCasaId),
-            time_visitante_id: parseInt(newMatch.timeVisitanteId),
-            gols_casa: parseInt(newMatch.golsCasa),
-            gols_visitante: parseInt(newMatch.golsVisitante),
+            // Usamos Number() para garantir que o resultado seja um número ou NaN
+            time_casa_id: Number(newMatch.timeCasaId), 
+            time_visitante_id: Number(newMatch.timeVisitanteId),
+            gols_casa: Number(newMatch.golsCasa), 
+            gols_visitante: Number(newMatch.golsVisitante), 
             data_partida: new Date().toISOString().slice(0, 10),
-            // Adicionar o ID da partida aos eventos
             eventos: newMatch.eventos.map(e => ({ ...e, partida_id: proximoId }))
         };
         
@@ -88,108 +88,192 @@ export default function AdminTool() {
     const handleSubmit = (e) => {
         e.preventDefault();
         
-        // 1. Gera a nova string JSON
-        const novaStringJson = generateNewJson(matchData);
-        setJsonGerado(novaStringJson);
+        if (matchData.golsCasa === '' || matchData.golsVisitante === '') {
+            alert('Por favor, preencha os placares antes de gerar o JSON.');
+            return; // Sai da função se a validação falhar
+        }
         
-        // 2. Pré-visualiza o resultado (apenas para teste)
         try {
+            // 1. Gera a nova string JSON
+            const novaStringJson = generateNewJson(matchData);
+            
+            // Se a geração falhar, o código pula direto para o catch.
+            setJsonGerado(novaStringJson);
+            
+            // 2. Pré-visualiza o resultado (apenas para teste)
             const novosDadosObjeto = JSON.parse(novaStringJson);
             const tabelaCalculada = calcularClassificacao(novosDadosObjeto);
             setTabelaTeste(tabelaCalculada);
-        } catch (error) {
-            console.error("Erro na pré-visualização:", error);
-            setTabelaTeste([{ nome: "Erro ao Calcular", J: 0, P: 0 }]);
-        }
 
-        alert('✅ NOVO JSON GERADO! Copie o conteúdo abaixo.');
+            alert('✅ NOVO JSON GERADO! Role para baixo e copie o conteúdo da caixa.');
+            
+        } catch (error) {
+            // Se houver um erro em qualquer ponto acima (JSON inválido, erro de cálculo)
+            console.error("ERRO FATAL NA GERAÇÃO DO JSON:", error);
+            alert('❌ Erro na Geração/Cálculo do JSON. Verifique o console para detalhes.');
+        }
+    };
+
+    /**
+     * Recebe o conteúdo JSON como string e força o download como arquivo.
+     * @param {string} jsonString - A string JSON completa gerada.
+     * @param {string} filename - Nome do arquivo para download.
+    */
+    const downloadJsonFile = (jsonString, filename = 'campeonato_atualizado.json') => {
+        // 1. Cria um objeto Blob (Binary Large Object) com o conteúdo JSON
+        const blob = new Blob([jsonString], { type: 'application/json' });
+        
+        // 2. Cria uma URL temporária para o Blob
+        const url = URL.createObjectURL(blob);
+        
+        // 3. Cria um elemento <a> invisível para simular o clique de download
+        const link = document.createElement('a');
+        link.href = url;
+        link.download = filename; // Define o nome do arquivo
+
+        // 4. Dispara o download e remove o elemento
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+
+        // 5. Limpa a URL do objeto Blob para liberar memória
+        URL.revokeObjectURL(url);
+        
+        alert(`✅ Arquivo ${filename} gerado e pronto para download! Salve e substitua o arquivo no seu projeto.`);
     };
 
     // --- Renderização do Componente ---
     return (
-        <div style={{ padding: '20px', maxWidth: '800px', margin: '0 auto', fontFamily: 'sans-serif' }}>
+        <div className="container" style={{ maxWidth: '900px' }}>
             <h1>⚽ Ferramenta de Administração (EAFC 26)</h1>
-            <p><strong>Atenção:</strong> Esta ferramenta *não* salva dados no servidor. Ela gera o novo arquivo JSON para você copiar e substituir manualmente no seu projeto.</p>
+            <p><strong>Atenção:</strong> Esta ferramenta *não* salva dados no servidor. Ela gera o novo arquivo JSON para você copiar e substituir.</p>
             
-            <h2>1. Registrar Nova Partida</h2>
-            <form onSubmit={handleSubmit} style={{ border: '1px solid #ccc', padding: '15px', borderRadius: '5px' }}>
+            <h2 style={{ borderBottom: '2px solid #333', paddingBottom: '10px', marginTop: '30px', color: '#00bcd4' }}>1. Registrar Nova Partida</h2>
+            
+            <form onSubmit={handleSubmit}>
                 
-                {/* Detalhes da Partida */}
-                <div style={{ marginBottom: '15px' }}>
-                    <label>Time da Casa:</label>
-                    <select name="timeCasaId" value={matchData.timeCasaId} onChange={handleMatchChange}>
-                        {times.map(t => <option key={t.id} value={t.id}>{t.nome}</option>)}
-                    </select>
-                    vs. 
-                    <label style={{ marginLeft: '20px' }}>Time Visitante:</label>
-                    <select name="timeVisitanteId" value={matchData.timeVisitanteId} onChange={handleMatchChange}>
-                        {times.map(t => <option key={t.id} value={t.id}>{t.nome}</option>)}
-                    </select>
-                </div>
+                {/* Detalhes da Partida (Grupo 1) - MELHORIA DE ALINHAMENTO */}
+                <div className="admin-form-group">
+                    <h3 style={{ marginTop: 0, color: '#e0e0e0', borderBottom: '1px solid #333', paddingBottom: '10px' }}>Times e Placar</h3>
+                    
+                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
+                        
+                        {/* 1. Time da Casa */}
+                        <div style={{ flex: 1, display: 'flex', flexDirection: 'column' }}>
+                            <label style={{ fontWeight: 'bold', color: '#e0e0e0', marginBottom: '5px' }}>Time da Casa:</label>
+                            <select className="admin-select" name="timeCasaId" value={matchData.timeCasaId} onChange={handleMatchChange}>
+                                {times.map(t => <option key={t.id} value={t.id}>{t.nome}</option>)}
+                            </select>
+                        </div>
 
-                <div style={{ marginBottom: '15px' }}>
-                    <label>Placar Final:</label>
-                    <input type="number" name="golsCasa" value={matchData.golsCasa} onChange={handleMatchChange} min="0" style={{ width: '50px' }} />
-                    -
-                    <input type="number" name="golsVisitante" value={matchData.golsVisitante} onChange={handleMatchChange} min="0" style={{ width: '50px' }} />
+                        <h3 style={{ margin: '25px 20px 0', color: '#00bcd4' }}>VS</h3>
+
+                        {/* 2. Time Visitante */}
+                        <div style={{ flex: 1, display: 'flex', flexDirection: 'column' }}>
+                            <label style={{ fontWeight: 'bold', color: '#e0e0e0', marginBottom: '5px' }}>Time Visitante:</label>
+                            <select className="admin-select" name="timeVisitanteId" value={matchData.timeVisitanteId} onChange={handleMatchChange}>
+                                {times.map(t => <option key={t.id} value={t.id}>{t.nome}</option>)}
+                            </select>
+                        </div>
+                        
+                        {/* 3. Placar Final - ALINHAMENTO HORIZONTAL CORRIGIDO */}
+                        <div style={{ marginLeft: '40px' }}>
+                            <label style={{ fontWeight: 'bold', color: '#e0e0e0', display: 'block', marginBottom: '5px' }}>Placar Final:</label>
+                            <div style={{ display: 'flex', alignItems: 'center', gap: '5px' }}>
+                                <input className="admin-input" type="number" name="golsCasa" value={matchData.golsCasa} onChange={handleMatchChange} min="0" style={{ width: '40px', textAlign: 'center' }} />
+                                <span style={{ color: '#e0e0e0' }}>-</span>
+                                <input className="admin-input" type="number" name="golsVisitante" value={matchData.golsVisitante} onChange={handleMatchChange} min="0" style={{ width: '40px', textAlign: 'center' }} />
+                            </div>
+                        </div>
+                    </div>
                 </div>
                 
-                {/* Seção de Eventos */}
-                <h3>Eventos (Gols, Assistências, Cartões)</h3>
-                <div style={{ display: 'flex', gap: '10px', marginBottom: '10px', borderBottom: '1px dotted #eee', paddingBottom: '10px' }}>
-                    <select name="jogadorId" value={novoEvento.jogadorId} onChange={handleNewEventChange}>
-                        <option value="">-- Jogador --</option>
-                        {jogadores.map(j => <option key={j.id} value={j.id}>{j.nome} ({times.find(t => t.id === j.time_id)?.nome})</option>)}
-                    </select>
+                {/* Seção de Eventos (Grupo 2) - ALINHAMENTO CENTRALIZADO */}
+                <div className="admin-form-group">
+                    <h3 style={{ marginTop: 0, color: '#e0e0e0', borderBottom: '1px solid #333', paddingBottom: '10px' }}>
+                        Eventos (Gols, Assistências, Cartões)
+                    </h3>
                     
-                    <select name="tipo" value={novoEvento.tipo} onChange={handleNewEventChange}>
-                        <option value="gol">Gol</option>
-                        <option value="assistencia">Assistência</option>
-                        <option value="cartao_amarelo">Cartão Amarelo</option>
-                        <option value="cartao_vermelho">Cartão Vermelho</option>
-                    </select>
-                    
-                    <input type="number" name="minuto" placeholder="Minuto" value={novoEvento.minuto} onChange={handleNewEventChange} style={{ width: '80px' }} />
+                    {/* Linha de Adição de Evento com centralização vertical */}
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '15px', marginBottom: '20px' }}> 
+                        
+                        {/* Jogador */}
+                        <select className="admin-select" name="jogadorId" value={novoEvento.jogadorId} onChange={handleNewEventChange} style={{ flex: 2 }}>
+                            <option value="">-- Jogador --</option>
+                            {jogadores.map(j => <option key={j.id} value={j.id}>{j.nome} ({times.find(t => t.id === j.time_id)?.nome})</option>)}
+                        </select>
+                        
+                        {/* Tipo de Evento */}
+                        <select className="admin-select" name="tipo" value={novoEvento.tipo} onChange={handleNewEventChange} style={{ flex: 1.5 }}>
+                            <option value="gol">Gol</option>
+                            <option value="assistencia">Assistência</option>
+                            <option value="cartao_amarelo">Cartão Amarelo</option>
+                            <option value="cartao_vermelho">Cartão Vermelho</option>
+                        </select>
+                        
+                        {/* Minuto */}
+                        <input 
+                            className="admin-input" 
+                            type="number" 
+                            name="minuto" 
+                            placeholder="Minuto" 
+                            value={novoEvento.minuto} 
+                            onChange={handleNewEventChange} 
+                            style={{ width: '70px', textAlign: 'center' }} 
+                        />
 
-                    <button type="button" onClick={handleAddEvent}>+ Adicionar Evento</button>
+                        {/* Botão de Adicionar */}
+                        <button 
+                            type="button" 
+                            onClick={handleAddEvent} 
+                            className="btn-primary" 
+                            style={{ backgroundColor: '#69f0ae', color: '#121212', fontSize: '1em', flex: 1, minWidth: '100px' }}
+                        >
+                            + Adicionar
+                        </button>
+                    </div>
+
+                    {/* Lista de Eventos Cadastrados */}
+                    <ul style={{ listStyleType: 'none', paddingLeft: '0', fontSize: '0.9em' }}>
+                        {matchData.eventos.map((e, index) => (
+                            <li key={index} style={{ padding: '5px 0', borderBottom: '1px dotted #333' }}>
+                                **{e.tipo.toUpperCase()}** em **{e.minuto || '??'}**' por **{jogadores.find(j => j.id === e.jogadorId)?.nome}**
+                            </li>
+                        ))}
+                    </ul>
                 </div>
 
-                <ul style={{ listStyleType: 'disc', paddingLeft: '20px' }}>
-                    {matchData.eventos.map((e, index) => (
-                        <li key={index}>
-                            {e.tipo.toUpperCase()}: **{e.jogadorId}** ({e.minuto}')
-                        </li>
-                    ))}
-                </ul>
-
-                <button type="submit" style={{ padding: '10px 20px', backgroundColor: '#4CAF50', color: 'white', border: 'none', cursor: 'pointer', marginTop: '20px' }}>
-                    GERAR NOVO ARQUIVO JSON
+                <button type="submit" className="btn-primary">
+                    GERAR NOVO ARQUIVO JSON PARA DEPLOY
                 </button>
             </form>
 
             {/* --- Saída do JSON Gerado --- */}
             {jsonGerado && (
-                <div style={{ marginTop: '40px', backgroundColor: '#f9f9f9', padding: '20px', borderRadius: '5px' }}>
-                    <h2>2. Copiar e Publicar</h2>
-                    <p style={{ fontWeight: 'bold', color: '#CC0000' }}>
-                        PASSO CRÍTICO: Copie TODO o conteúdo da caixa de texto abaixo e SUBSTITUA o arquivo 
-                        <code>src/data/campeonato.json</code> do seu projeto local.
+                <div style={{ marginTop: '40px' }}>
+                    <h2>2. Salvar e Publicar</h2>
+                    <p style={{ color: '#e0e0e0' }}>
+                        O novo conteúdo JSON foi gerado. Clique no botão abaixo para **baixar o arquivo** e, em seguida, **substitua o arquivo <code>src/data/campeonato.json</code>** do seu projeto local.
                     </p>
-                    <p>Em seguida, faça o commit e deploy.</p>
 
-                    <textarea 
-                        value={jsonGerado} 
-                        readOnly 
-                        rows="25" 
-                        cols="80"
-                        style={{ width: '100%', whiteSpace: 'pre', overflowWrap: 'normal', fontFamily: 'monospace', fontSize: '12px' }}
-                        onClick={(e) => e.target.select()} // Facilita a seleção do texto
-                    />
+                    <button 
+                        className="btn-primary"
+                        style={{ backgroundColor: '#69f0ae', color: '#121212', fontWeight: 'bold' }}
+                        onClick={() => downloadJsonFile(jsonGerado, 'campeonato.json')}
+                    >
+                        ⬇️ FAZER DOWNLOAD do novo campeonato.json
+                    </button>
                     
-                    <h3>Pré-visualização da Tabela (Teste Rápido)</h3>
-                    <table style={{ width: '100%', borderCollapse: 'collapse', textAlign: 'left' }}>
+                    {/* Botão de download é mais seguro que o campo de texto */}
+                    <p style={{ marginTop: '20px', fontSize: '0.9em' }}>
+                        **Próximo Passo:** Após o download, substitua o arquivo local e faça o commit/deploy.
+                    </p>
+                    
+                    {/* Pré-visualização simplificada */}
+                    <h3>Pré-visualização da Tabela (Nova Ordem)</h3>
+                    <table className="score-table">
                         <thead>
-                            <tr style={{ backgroundColor: '#eee' }}><th>Time</th><th>J</th><th>P</th><th>...</th></tr>
+                            <tr style={{ backgroundColor: '#eee' }}><th>Time</th><th>J</th><th>P</th><th>V</th><th>E</th><th>D</th><th>SG</th></tr>
                         </thead>
                         <tbody>
                             {tabelaTeste && tabelaTeste.map(time => (
@@ -197,7 +281,10 @@ export default function AdminTool() {
                                     <td>{time.nome}</td>
                                     <td>{time.J}</td>
                                     <td>{time.P}</td>
-                                    <td>...</td>
+                                    <td>{time.V}</td> {/* Exibe o número de vitórias */}
+                                    <td>{time.E}</td> {/* Exibe o número de empates */}
+                                    <td>{time.D}</td> {/* Exibe o número de derrotas */}
+                                    <td>{time.SG}</td> {/* Exibe o saldo de gols */}
                                 </tr>
                             ))}
                         </tbody>

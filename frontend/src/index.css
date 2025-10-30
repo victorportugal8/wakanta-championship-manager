@@ -1,68 +1,120 @@
-:root {
-  font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
-  line-height: 1.5;
-  font-weight: 400;
-
-  color-scheme: light dark;
-  color: rgba(255, 255, 255, 0.87);
-  background-color: #242424;
-
-  font-synthesis: none;
-  text-rendering: optimizeLegibility;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-}
-
-a {
-  font-weight: 500;
-  color: #646cff;
-  text-decoration: inherit;
-}
-a:hover {
-  color: #535bf2;
-}
+/* ================================================= */
+/* Base Global & Tipografia (Dark Mode) */
+/* ================================================= */
 
 body {
-  margin: 0;
-  display: flex;
-  place-items: center;
-  min-width: 320px;
-  min-height: 100vh;
+    background-color: #121212; /* Fundo escuro principal */
+    color: #e0e0e0; /* Texto principal claro */
+    font-family: 'Roboto', Arial, sans-serif;
+    line-height: 1.6;
+    margin: 0;
 }
 
-h1 {
-  font-size: 3.2em;
-  line-height: 1.1;
+h1, h2, h3 {
+    color: #00bcd4; /* Azul Elétrico como cor de destaque */
+    font-weight: 700;
 }
 
-button {
-  border-radius: 8px;
-  border: 1px solid transparent;
-  padding: 0.6em 1.2em;
-  font-size: 1em;
-  font-weight: 500;
-  font-family: inherit;
-  background-color: #1a1a1a;
-  cursor: pointer;
-  transition: border-color 0.25s;
-}
-button:hover {
-  border-color: #646cff;
-}
-button:focus,
-button:focus-visible {
-  outline: 4px auto -webkit-focus-ring-color;
+/* Container principal para centralizar o conteúdo */
+.container {
+    padding: 40px 20px;
+    max-width: 1200px;
+    margin: 0 auto;
 }
 
-@media (prefers-color-scheme: light) {
-  :root {
-    color: #213547;
-    background-color: #ffffff;
-  }
-  a:hover {
-    color: #747bff;
-  }
-  button {
-    background-color: #f9f9f9;
-  }
+/* ================================================= */
+/* Estilos de Tabela (Usado em Tabela.jsx) */
+/* ================================================= */
+
+.score-table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4); /* Sombra mais visível no escuro */
+    background-color: #1e1e1e; /* Fundo dos componentes */
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.score-table th, .score-table td {
+    padding: 12px 15px;
+    text-align: left;
+    border-bottom: 1px solid #333333; /* Borda escura suave */
+}
+
+.score-table thead th {
+    background-color: #00bcd4; /* Azul Elétrico vibrante no cabeçalho */
+    color: #121212; /* Texto escuro sobre o destaque claro */
+    font-weight: 600;
+    text-transform: uppercase;
+    font-size: 0.9em;
+}
+
+.score-table tbody tr:hover {
+    background-color: #2a2a2a; /* Destaque ao passar o mouse */
+}
+
+.score-table tbody tr:nth-child(odd) {
+    background-color: #1a1a1a; /* Zebrada suave */
+}
+
+/* Estilos específicos para a classificação */
+.col-pos { width: 5%; font-weight: 700; color: #00bcd4; }
+.col-points { font-weight: 700; color: #69f0ae; } /* Pontos em destaque verde neon */
+.col-sg { font-weight: 700; }
+.positive-sg { color: #69f0ae; } /* Verde para saldo positivo */
+.negative-sg { color: #ff5252; } /* Vermelho neon para saldo negativo */
+
+
+/* ================================================= */
+/* Estilos de Formulário (Usado em AdminTool.jsx) */
+/* ================================================= */
+
+.admin-form-group {
+    margin-bottom: 20px;
+    padding: 15px;
+    border: 1px solid #333333;
+    border-radius: 6px;
+    background-color: #1e1e1e;
+    color: #e0e0e0;
+}
+
+.admin-input, .admin-select {
+    padding: 10px;
+    margin-right: 10px;
+    border: 1px solid #444;
+    border-radius: 4px;
+    font-size: 1em;
+    background-color: #2a2a2a; /* Input com fundo levemente mais claro */
+    color: #e0e0e0;
+}
+
+.admin-input::placeholder {
+    color: #999;
+}
+
+.btn-primary {
+    padding: 12px 25px;
+    background-color: #00bcd4; /* Azul Elétrico */
+    color: #121212; /* Texto escuro para alto contraste */
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    font-weight: 600;
+}
+
+.btn-primary:hover {
+    background-color: #4dd0e1;
+}
+
+.json-output-box {
+    background-color: #000000; /* Preto puro para área de código */
+    color: #69f0ae; /* Texto verde neon para código */
+    padding: 15px;
+    border-radius: 6px;
+    overflow: auto;
+    font-family: monospace;
+    font-size: 0.9em;
+    border: 1px solid #00bcd4;
 }
