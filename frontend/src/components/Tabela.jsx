@@ -1,5 +1,5 @@
-import dadosCampeonato from '../data/dadosCampeonato.json';
-import { calcularClassificacao } from '../utils/calculadoraClassificao';
+import dadosCampeonato from '../data/campeonato.json';
+import { calcularClassificacao } from '../utils/calculadora';
 
 function Tabela() {
     // A tabela é calculada uma única vez quando o componente é renderizado
@@ -16,7 +16,13 @@ function Tabela() {
                         <td>{index + 1}</td>
                         <td>{time.nome}</td>
                         <td>{time.P}</td>
-                        {/* ... e o resto das colunas */}
+                        <td>{time.J}</td>
+                        <td>{time.V}</td>
+                        <td>{time.E}</td>
+                        <td>{time.D}</td>
+                        <td>{time.GP}</td>
+                        <td>{time.GC}</td>
+                        <td>{time.SG}</td>
                     </tr>
                 ))}
             </tbody>

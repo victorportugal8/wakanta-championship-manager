@@ -52,9 +52,21 @@ export function calcularClassificacao(dados){
     // 4. Ordena a tabela: 1º Pontos, 2º Saldo, 3º Gols Pró
     tabela.sort((a, b) => {
         if (a.P !== b.P) return b.P - a.P; // Pontos (maior para menor)
+        if (a.V !== b.V) return b.V - a.V; // Vitórias
         if (a.SG !== b.SG) return b.SG - a.SG; // Saldo de Gols
         return b.GP - a.GP; // Gols Pró
     });
 
-    return tabela;
+    return tabela; 
+}
+
+// Função para simplificar a exibição dos eventos (ex: "3 Gols (PlayerA)")
+export function calcularEventos(dados) {
+    const eventos = {};
+    dados.partidas.forEach(partida => {
+        partida.eventos.forEach(evento => {
+            eventos[evento.jogador_id] = (eventos[evento.jogador_id] || 0) + 1;
+        });
+    });
+    return eventos;
 }

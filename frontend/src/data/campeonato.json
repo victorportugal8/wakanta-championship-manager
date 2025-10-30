@@ -1,0 +1,19 @@
+{
+  "times": [
+    {"id": 1, "nome": "Arsenal", "dono": ""},
+    {"id": 2, "nome": "Barcelona", "dono": ""},
+    {"id": 3, "nome": "Bayern de Munique", "dono": ""},
+    {"id": 4, "nome": "Botafogo", "dono": ""},
+    {"id": 5, "nome": "Chelsea", "dono": ""},
+    {"id": 6, "nome": "Flamengo", "dono": ""},
+    {"id": 7, "nome": "Manchester City", "dono": ""},
+    {"id": 8, "nome": "Milan", "dono": ""}
+  ],
+  "partidas": [
+    {"id": 1, "time_casa_id": 1, "time_visitante_id": 2, "gols_casa": 3, "gols_visitante": 1, "eventos": [
+      {"jogador_id": "PlayerA", "tipo": "gol", "minuto": 15},
+      {"jogador_id": "PlayerA", "tipo": "gol", "minuto": 60},
+      {"jogador_id": "PlayerB", "tipo": "gol", "minuto": 80}
+      ]}
+  ]
+}
