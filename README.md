@@ -51,7 +51,7 @@ O sistema é dividido em duas áreas: uma **Área Pública (Vitrine)** para todo
 
         3. **Gerar a nova string JSON completa e atualizada.**
 
-    * **Atualização do Site:** O Administrador deve copiar a string JSON gerada e **colar manualmente** no arquivo `src/data/dadosCampeonato.json` do projeto local, seguido de um commit e deploy para atualizar o site para o público.
+    * **Atualização do Site:** O Administrador deve copiar a string JSON gerada e **colar manualmente** no arquivo `src/data/campeonato.json` do projeto local, seguido de um commit e deploy para atualizar o site para o público.
 
 ## 🚀 Primeiros Passos (Para Desenvolvedores)
 
@@ -61,6 +61,6 @@ O sistema é dividido em duas áreas: uma **Área Pública (Vitrine)** para todo
 
 3. Inicie o ambiente de desenvolvimento: `npm run dev`
 
-4. Acesse e edite o arquivo `src/data/dadosCampeonato.json` com os dados iniciais dos times.
+4. Acesse e edite o arquivo `src/data/campeonato.json` com os dados iniciais dos times.
 
 5. Para atualizar o site, utilize a Ferramenta de Admin localmente, obtenha o novo JSON e faça o *deploy* para o seu serviço de hospedagem (Vercel/Netlify).
