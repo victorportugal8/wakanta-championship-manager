@@ -39,9 +39,9 @@ O sistema é dividido em duas áreas: uma **Área Pública (Vitrine)** para todo
 
 2. **Ferramenta de Admin (Gerenciamento Manual)**
 
-    A Ferramenta de Admin é uma seção do React acessível apenas ao administrador, que permite:
+    A Ferramenta de Admin é uma seção do React acessível apenas ao administrador, que permite gerenciar os dados do campeonato.
 
-    * **Entrada de Resultados:** Formulário para registrar novos resultados de partidas, gols, assistências e cartões.
+    * **Entrada de Resultados:** Formulário dedicado para registrar novos resultados de partidas, gols, assistências e cartões.
 
     * **Geração do JSON:** Após inserir um novo resultado, a ferramenta utiliza a lógica JavaScript para:
 
@@ -49,9 +49,12 @@ O sistema é dividido em duas áreas: uma **Área Pública (Vitrine)** para todo
 
         2. Adicionar o novo resultado ao histórico.
 
-        3. **Gerar a nova string JSON completa e atualizada.**
+        3. **Gerar a nova estrutura de dados completa e atualizada.**
 
-    * **Atualização do Site:** O Administrador deve copiar a string JSON gerada e **colar manualmente** no arquivo `src/data/campeonato.json` do projeto local, seguido de um commit e deploy para atualizar o site para o público.
+    * **Atualização do Site:** O Administrador deve:
+        1. Clicar em **"Fazer Download"** para salvar o novo arquivo `campeonato.json` gerado.
+        2. **Substituir manualmente** o arquivo `src/data/campeonato.json` no projeto local.
+        3. Realizar o *commit* e *deploy* para atualizar o site para o público.
 
 ## 🚀 Primeiros Passos (Para Desenvolvedores)
 
@@ -63,4 +66,4 @@ O sistema é dividido em duas áreas: uma **Área Pública (Vitrine)** para todo
 
 4. Acesse e edite o arquivo `src/data/campeonato.json` com os dados iniciais dos times.
 
-5. Para atualizar o site, utilize a Ferramenta de Admin localmente, obtenha o novo JSON e faça o *deploy* para o seu serviço de hospedagem (Vercel/Netlify).
+5. Para atualizar o site, utilize a Ferramenta de Admin localmente, **baixe o novo JSON**, e faça o *deploy* para o seu serviço de hospedagem (Vercel/Netlify).
