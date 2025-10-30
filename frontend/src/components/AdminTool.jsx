@@ -24,7 +24,7 @@ export default function AdminTool() {
     const [tabelaTeste, setTabelaTeste] = useState(null);
     const [novoEvento, setNovoEvento] = useState({ 
         jogadorId: '',        // Alterado (de jogadores[0]?.id...)
-        tipo: 'gol', 
+        tipo: '', // Alterado de 'gol' para ''
         minuto: ''             // Alterado (de 45)
     });
 
@@ -218,6 +218,7 @@ export default function AdminTool() {
                         
                         {/* Tipo de Evento */}
                         <select className="admin-select" name="tipo" value={novoEvento.tipo} onChange={handleNewEventChange} style={{ flex: 1.5 }}>
+                            <option value="" disabled>-- Selecione o Evento --</option>
                             <option value="gol">Gol</option>
                             <option value="assistencia">Assistência</option>
                             <option value="cartao_amarelo">Cartão Amarelo</option>
