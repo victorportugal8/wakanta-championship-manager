@@ -3,11 +3,29 @@ import React, { useMemo } from 'react';
 import dadosCampeonato from '../data/campeonato.json'; 
 import { calcularClassificacao, calcularRankingsIndividuais } from '../utils/calculadora';
 
+// Componente de Tabela
 export default function Tabela() {
     
-    const tabelaClassificacao = useMemo(() => calcularClassificacao(dadosCampeonato), []);
-    const rankings = useMemo(() => calcularRankingsIndividuais(dadosCampeonato), []);
+    // Cálculos existentes
+    const tabelaClassificacao = useMemo(() => calcularClassificacao(dadosCampeonato), [dadosCampeonato]);
+    const rankings = useMemo(() => calcularRankingsIndividuais(dadosCampeonato), [dadosCampeonato]);
     
+    // --- NOVO: Lógica dos Resultados Recentes ---
+    
+    // 1. Criar um mapa de times (ID -> Nome) para consulta rápida
+    const timesMap = useMemo(() => {
+        return dadosCampeonato.times.reduce((acc, time) => {
+            acc[time.id] = time.nome; // Ex: {1: "Time Alpha", 2: "Time Beta"}
+            return acc;
+        }, {});
+    }, [dadosCampeonato.times]); // Depende apenas dos times
+
+    // 2. Obter as últimas 5 partidas (as mais recentes)
+    const recentMatches = useMemo(() => {
+        // Clonamos o array, invertemos (para os mais novos virem primeiro) e pegamos 5
+        return [...dadosCampeonato.partidas].reverse().slice(0, 5);
+    }, [dadosCampeonato.partidas]); // Depende das partidas
+
     // --- Renderização do Cabeçalho da Tabela ---
     const renderHeader = (headers) => (
         <thead>
@@ -50,6 +68,31 @@ export default function Tabela() {
                         ))}
                     </tbody>
                 </table>
+            </div>
+
+            {/* --- NOVO: Seção de Resultados Recentes --- */}
+            <div style={{ marginBottom: '40px' }}>
+                <h2>Últimos Resultados</h2>
+                <div className="recent-matches-container">
+                    {recentMatches.map(match => (
+                        <div key={match.id} className="match-card">
+                            {/* Time da Casa */}
+                            <span className="team-home">
+                                {timesMap[match.time_casa_id] || 'Time Desconhecido'}
+                            </span>
+                            
+                            {/* Placar */}
+                            <span className="score">
+                                {match.gols_casa} - {match.gols_visitante}
+                            </span>
+                            
+                            {/* Time Visitante */}
+                            <span className="team-away">
+                                {timesMap[match.time_visitante_id] || 'Time Desconhecido'}
+                            </span>
+                        </div>
+                    ))}
+                </div>
             </div>
 
             <div style={{ display: 'flex', justifyContent: 'space-between', gap: '30px' }}>

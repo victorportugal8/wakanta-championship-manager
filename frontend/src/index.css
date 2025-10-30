@@ -118,3 +118,62 @@ h1, h2, h3 {
     font-size: 0.9em;
     border: 1px solid #00bcd4;
 }
+
+/* ================================================= */
+/* Estilos de Resultados Recentes (Tabela.jsx) */
+/* ================================================= */
+
+.recent-matches-container {
+    display: grid;
+    /* 1 coluna em telas pequenas */
+    grid-template-columns: 1fr;
+    gap: 15px;
+}
+
+/* Em telas maiores (desktops/tablets), exibe em 2 colunas */
+@media (min-width: 768px) {
+    .recent-matches-container {
+        grid-template-columns: 1fr 1fr;
+    }
+}
+
+.match-card {
+    background-color: #1e1e1e; /* Fundo do componente (Dark Mode) */
+    border: 1px solid #333333; /* Borda escura */
+    border-radius: 8px;
+    padding: 15px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.match-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+}
+
+.match-card .team-home {
+    font-weight: 600;
+    font-size: 1.1em;
+    text-align: right;
+    flex: 1; /* Ocupa o espaço disponível */
+    color: #e0e0e0; /* Texto claro */
+}
+
+.match-card .team-away {
+    font-weight: 600;
+    font-size: 1.1em;
+    text-align: left;
+    flex: 1; /* Ocupa o espaço disponível */
+    color: #e0e0e0;
+}
+
+.match-card .score {
+    font-size: 1.5em;
+    font-weight: 700;
+    color: #00bcd4; /* Destaque azul (Dark Mode) */
+    margin: 0 25px; /* Espaçamento entre os times e o placar */
+    flex-shrink: 0; /* Impede que o placar seja espremido */
+}
