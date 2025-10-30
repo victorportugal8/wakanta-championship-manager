@@ -16,6 +16,13 @@ O objetivo principal é oferecer uma plataforma centralizada e de fácil acesso 
 
 Este projeto segue a **Abordagem Simplificada (React + JSON)**, eliminando a necessidade de um servidor de backend ou banco de dados gerenciado.
 
+| Categoria | Tecnologia | Uso no Projeto |
+| :--- | :--- | :--- |
+| **Frontend/UI** | **React** (via Vite) | Construção da interface do usuário (tabelas, listas, formulários). |
+| **Lógica de Dados** | **JavaScript Puro** | Funções no Frontend para fazer todos os cálculos de estatísticas (pontos, saldo, artilharia). |
+| **Armazenamento** | **JSON** (Arquivo Estático) | O "banco de dados" do projeto. Armazena times, jogadores e todos os resultados de partidas. |
+| **Hospedagem** | **Vercel / Netlify** | Hospedagem de custo zero para o Frontend estático. |
+
 ## ✨ Funcionalidades do Projeto
 
 O sistema é dividido em duas áreas: uma **Área Pública (Vitrine)** para todos os participantes e uma **Ferramenta de Admin** para o gerenciador do campeonato.
