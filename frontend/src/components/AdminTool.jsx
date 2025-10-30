@@ -12,20 +12,20 @@ export default function AdminTool() {
 
     // Estado para os dados da nova partida (Formulário)
     const [matchData, setMatchData] = useState({
-        timeCasaId: times[0]?.id.toString() || '',
-        timeVisitanteId: times[1]?.id.toString() || '',
-        golsCasa: 0,
-        golsVisitante: 0,
-        eventos: [], // Array de objetos {jogadorId, tipo, minuto}
+        timeCasaId: '',       // Alterado (de times[0]?.id...)
+        timeVisitanteId: '',  // Alterado (de times[1]?.id...)
+        golsCasa: '',         // Alterado (de 0)
+        golsVisitante: '',    // Alterado (de 0)
+        eventos: [],
     });
 
     // Estados para a saída e pré-visualização
     const [jsonGerado, setJsonGerado] = useState('');
     const [tabelaTeste, setTabelaTeste] = useState(null);
     const [novoEvento, setNovoEvento] = useState({ 
-        jogadorId: jogadores[0]?.id || '', 
+        jogadorId: '',        // Alterado (de jogadores[0]?.id...)
         tipo: 'gol', 
-        minuto: 45 
+        minuto: ''             // Alterado (de 45)
     });
 
     // --- Lógica de Geração do Novo JSON ---
@@ -88,9 +88,16 @@ export default function AdminTool() {
     const handleSubmit = (e) => {
         e.preventDefault();
         
-        if (matchData.golsCasa === '' || matchData.golsVisitante === '') {
-            alert('Por favor, preencha os placares antes de gerar o JSON.');
+        // --- MUDANÇA AQUI ---
+        // Validação atualizada para incluir os IDs dos times
+        if (!matchData.timeCasaId || !matchData.timeVisitanteId || matchData.golsCasa === '' || matchData.golsVisitante === '') {
+            alert('Por favor, preencha todos os campos da partida (Times e Placar) antes de gerar o JSON.');
             return; // Sai da função se a validação falhar
+        }
+        
+        if (matchData.timeCasaId === matchData.timeVisitanteId) {
+            alert('O Time da Casa não pode ser igual ao Time Visitante.');
+            return;
         }
         
         try {
@@ -162,6 +169,8 @@ export default function AdminTool() {
                         <div style={{ flex: 1, display: 'flex', flexDirection: 'column' }}>
                             <label style={{ fontWeight: 'bold', color: '#e0e0e0', marginBottom: '5px' }}>Time da Casa:</label>
                             <select className="admin-select" name="timeCasaId" value={matchData.timeCasaId} onChange={handleMatchChange}>
+                                {/* --- MUDANÇA AQUI --- */}
+                                <option value="" disabled>-- Selecione um Time --</option>
                                 {times.map(t => <option key={t.id} value={t.id}>{t.nome}</option>)}
                             </select>
                         </div>
@@ -172,17 +181,20 @@ export default function AdminTool() {
                         <div style={{ flex: 1, display: 'flex', flexDirection: 'column' }}>
                             <label style={{ fontWeight: 'bold', color: '#e0e0e0', marginBottom: '5px' }}>Time Visitante:</label>
                             <select className="admin-select" name="timeVisitanteId" value={matchData.timeVisitanteId} onChange={handleMatchChange}>
+                                {/* --- MUDANÇA AQUI --- */}
+                                <option value="" disabled>-- Selecione um Time --</option>
                                 {times.map(t => <option key={t.id} value={t.id}>{t.nome}</option>)}
                             </select>
                         </div>
                         
-                        {/* 3. Placar Final - ALINHAMENTO HORIZONTAL CORRIGIDO */}
+                        {/* 3. Placar Final */}
                         <div style={{ marginLeft: '40px' }}>
                             <label style={{ fontWeight: 'bold', color: '#e0e0e0', display: 'block', marginBottom: '5px' }}>Placar Final:</label>
                             <div style={{ display: 'flex', alignItems: 'center', gap: '5px' }}>
-                                <input className="admin-input" type="number" name="golsCasa" value={matchData.golsCasa} onChange={handleMatchChange} min="0" style={{ width: '40px', textAlign: 'center' }} />
+                                {/* --- MUDANÇA AQUI --- */}
+                                <input className="admin-input" type="number" name="golsCasa" value={matchData.golsCasa} onChange={handleMatchChange} min="0" style={{ width: '40px', textAlign: 'center' }} placeholder="0" />
                                 <span style={{ color: '#e0e0e0' }}>-</span>
-                                <input className="admin-input" type="number" name="golsVisitante" value={matchData.golsVisitante} onChange={handleMatchChange} min="0" style={{ width: '40px', textAlign: 'center' }} />
+                                <input className="admin-input" type="number" name="golsVisitante" value={matchData.golsVisitante} onChange={handleMatchChange} min="0" style={{ width: '40px', textAlign: 'center' }} placeholder="0" />
                             </div>
                         </div>
                     </div>
@@ -199,7 +211,8 @@ export default function AdminTool() {
                         
                         {/* Jogador */}
                         <select className="admin-select" name="jogadorId" value={novoEvento.jogadorId} onChange={handleNewEventChange} style={{ flex: 2 }}>
-                            <option value="">-- Jogador --</option>
+                            {/* --- MUDANÇA AQUI --- */}
+                            <option value="" disabled>-- Selecione o Jogador --</option>
                             {jogadores.map(j => <option key={j.id} value={j.id}>{j.nome} ({times.find(t => t.id === j.time_id)?.nome})</option>)}
                         </select>
                         
@@ -216,7 +229,7 @@ export default function AdminTool() {
                             className="admin-input" 
                             type="number" 
                             name="minuto" 
-                            placeholder="Minuto" 
+                            placeholder="Min" 
                             value={novoEvento.minuto} 
                             onChange={handleNewEventChange} 
                             style={{ width: '70px', textAlign: 'center' }} 

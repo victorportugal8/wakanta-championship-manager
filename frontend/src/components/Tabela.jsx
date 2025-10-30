@@ -41,7 +41,7 @@ export default function Tabela() {
     return (
         <div className="container"> {/* Usa a classe container para centralizar */}
             <h1 style={{ textAlign: 'center', borderBottom: '3px solid #00bcd4', paddingBottom: '10px', color: '#00bcd4' }}>
-                🏆 Campeonato EAFC 26 - Classificação
+                🏆 Wakanta League EAFC 26 - Classificação
             </h1>
 
             {/* --- Seção de Tabela de Classificação --- */}
