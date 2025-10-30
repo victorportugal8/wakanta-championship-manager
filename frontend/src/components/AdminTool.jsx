@@ -166,7 +166,7 @@ export default function AdminTool() {
                             </select>
                         </div>
 
-                        <h3 style={{ margin: '25px 20px 0', color: '#00bcd4' }}>VS</h3>
+                        <h3 style={{ margin: '25px 20px 0', color: '#e0e0e0' }}>VS</h3>
 
                         {/* 2. Time Visitante */}
                         <div style={{ flex: 1, display: 'flex', flexDirection: 'column' }}>
