@@ -216,3 +216,90 @@ h1, h2, h3 {
     color: #666; /* Texto apagado */
     cursor: not-allowed;
 }
+
+/* ================================================= */
+/* Estilos de Posição (Tabela.jsx - Círculos) */
+/* ================================================= */
+
+/* Badge (círculo) para a posição */
+.pos-badge {
+    display: inline-block;
+    width: 26px;       /* Largura do círculo */
+    height: 26px;      /* Altura do círculo */
+    line-height: 26px; /* Centraliza o número verticalmente */
+    border-radius: 50%; /* O segredo para o círculo */
+    text-align: center;
+    font-weight: 700;
+    font-size: 0.9em;
+    color: #121212; /* Texto escuro para contrastar com o fundo claro */
+}
+
+/* Zona Verde (Pos 1-2) */
+.pos-top2 {
+    background-color: #69f0ae; /* Verde Neon (Dark Mode) */
+}
+
+/* Zona Azul (Pos 3-6) */
+.pos-next4 {
+    background-color: #00bcd4; /* Azul Elétrico (Dark Mode) */
+}
+
+/* Posições normais (sem destaque de círculo) */
+.pos-normal {
+    color: #e0e0e0; /* Texto claro normal (sem fundo) */
+    font-weight: 700;
+    padding: 0 5px; /* Adiciona padding para alinhar com os círculos */
+}
+
+/* ================================================= */
+/* Estilos da Forma Recente (Tabela.jsx - Círculos) */
+/* ================================================= */
+
+/* Contêiner para alinhar os círculos na célula */
+.recent-form-container {
+    display: flex;
+    gap: 4px; /* Espaço entre os círculos */
+    justify-content: flex-start;
+    align-items: center;
+}
+
+/* * A classe base .result-badge usa o mesmo tamanho
+ * do .pos-badge (26px) para consistência visual.
+*/
+.result-badge {
+    display: inline-block;
+    width: 26px;
+    height: 26px;
+    line-height: 26px;
+    border-radius: 50%;
+    text-align: center;
+    font-weight: 700;
+    font-size: 0.9em;
+    color: #121212; /* Texto escuro (igual ao .pos-badge) */
+}
+
+/* Cores específicas para V, E, D */
+
+/* Verde (Vitória) - Usa a cor neon do .positive-sg */
+.result-badge.result-win {
+    background-color: #69f0ae;
+}
+
+/* Cinza (Empate) - Um cinza neutro do tema */
+.result-badge.result-draw {
+    background-color: #777; /* Cinza médio */
+    color: #e0e0e0; /* Texto claro para contrastar com cinza */
+}
+
+/* Vermelho (Derrota) - Usa a cor neon do .negative-sg */
+.result-badge.result-loss {
+    background-color: #ff5252;
+}
+
+/* * Classe de alinhamento para a célula da tabela 
+ * (para garantir espaço para os 5 círculos) 
+*/
+.col-form {
+    width: 150px; /* Largura para caber os 5 círculos + gaps */
+    text-align: left;
+}

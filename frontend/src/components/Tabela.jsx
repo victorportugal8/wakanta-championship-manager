@@ -45,6 +45,63 @@ export default function Tabela() {
             .sort((a, b) => a.id - b.id); // Ordena pela ordem de cadastro
     }, [rodadaSelecionada, dadosCampeonato.partidas]);
 
+    // --- NOVO: Função Helper para Destaque da Posição ---
+    /**
+     * Retorna o elemento JSX (span) correto para a posição,
+     * aplicando o estilo de círculo e cor apropriado.
+     */
+    const getPositionElement = (index) => {
+        const position = index + 1; // Converte índice (0-based) para posição (1-based)
+        
+        if (position >= 1 && position <= 2) {
+            // Zona Verde (Pos 1-2)
+            return <span className="pos-badge pos-top2">{position}</span>;
+        
+        } else if (position >= 3 && position <= 6) {
+            // Zona Azul (Pos 3-6)
+            return <span className="pos-badge pos-next4">{position}</span>;
+        
+        } else {
+            // Posições normais (sem destaque)
+            return <span className="pos-normal">{position}</span>;
+        }
+    };
+
+    // --- NOVO: Função Helper para Resultados Recentes ---
+    /**
+     * Retorna o elemento JSX (span) para um resultado (V, E, D),
+     * aplicando o estilo de círculo e cor apropriado.
+     */
+    const getResultElement = (resultado, index) => {
+        let className = '';
+        let title = '';
+
+        switch (resultado) {
+            case 'V':
+                className = 'result-win'; // Verde
+                title = 'Vitória';
+                break;
+            case 'E':
+                className = 'result-draw'; // Cinza
+                title = 'Empate';
+                break;
+            case 'D':
+                className = 'result-loss'; // Vermelho
+                title = 'Derrota';
+                break;
+            default:
+                className = 'result-draw'; // Padrão cinza
+                title = 'Indefinido';
+        }
+
+        // Usa 'result-badge' como classe base, similar ao .pos-badge
+        return (
+            <span key={index} className={`result-badge ${className}`} title={title}>
+                {resultado}
+            </span>
+        );
+    };
+
     // 4. Handlers para os botões
     const handleProximaRodada = () => {
         setRodadaSelecionada(prev => Math.min(prev + 1, totalRodadas));
@@ -75,11 +132,11 @@ export default function Tabela() {
             <div style={{ marginBottom: '40px' }}>
                 <h2>Tabela de Classificação</h2>
                 <table className="score-table"> {/* Aplica a classe de tabela */}
-                    {renderHeader(['Pos', 'Time', 'P', 'J', 'V', 'E', 'D', 'GP', 'GC', 'SG'])}
+                    {renderHeader(['Pos', 'Time', 'P', 'J', 'V', 'E', 'D', 'GP', 'GC', 'SG', 'Últimos 5'])}
                     <tbody>
                         {tabelaClassificacao.map((time, index) => (
                             <tr key={time.id}>
-                                <td className="col-pos">{index + 1}</td>
+                                <td className="col-pos">{getPositionElement(index)}</td>
                                 <td className="col-time">{time.nome}</td>
                                 <td className="col-points">{time.P}</td>
                                 <td>{time.J}</td>
@@ -90,6 +147,17 @@ export default function Tabela() {
                                 <td>{time.GC}</td>
                                 <td className={`col-sg ${time.SG > 0 ? 'positive-sg' : (time.SG < 0 ? 'negative-sg' : '')}`}>
                                     {time.SG}
+                                </td>
+                                {/* 2. NOVA CÉLULA (TD) PARA OS CÍRCULOS */}
+                                <td className="col-form">
+                                    <div className="recent-form-container">
+                                        {/* Mapeia os últimos 5 resultados.
+                                          Usamos .slice(-5) para garantir que sejam APENAS os 5 últimos.
+                                        */}
+                                        {time.ultimosResultados && time.ultimosResultados.slice(-5).map((res, i) => (
+                                            getResultElement(res, i)
+                                        ))}
+                                    </div>
                                 </td>
                             </tr>
                         ))}

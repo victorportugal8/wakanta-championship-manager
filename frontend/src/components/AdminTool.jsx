@@ -14,9 +14,9 @@ export default function AdminTool() {
     const [matchData, setMatchData] = useState({
         timeCasaId: '',       // Alterado (de times[0]?.id...)
         timeVisitanteId: '',  // Alterado (de times[1]?.id...)
-        golsCasa: '',         // Alterado (de 0)
-        golsVisitante: '',    // Alterado (de 0)
-        rodadas: '',           // Novo campo para rodada
+        golsCasa: '0',         // Alterado (de 0)
+        golsVisitante: '0',    // Alterado (de 0)
+        rodada: '1',           // Novo campo para rodada
         eventos: [],
     });
 
@@ -194,9 +194,9 @@ export default function AdminTool() {
                             <label style={{ fontWeight: 'bold', color: '#e0e0e0', display: 'block', marginBottom: '5px' }}>Placar Final:</label>
                             <div style={{ display: 'flex', alignItems: 'center', gap: '5px' }}>
                                 {/* --- MUDANÇA AQUI --- */}
-                                <input className="admin-input" type="number" name="golsCasa" value={matchData.golsCasa} onChange={handleMatchChange} min="0" style={{ width: '40px', textAlign: 'center' }} placeholder="0" />
+                                <input className="admin-input" type="number" name="golsCasa" value={matchData.golsCasa} onChange={handleMatchChange} min="0" style={{ width: '40px', textAlign: 'center' }} />
                                 <span style={{ color: '#e0e0e0' }}>-</span>
-                                <input className="admin-input" type="number" name="golsVisitante" value={matchData.golsVisitante} onChange={handleMatchChange} min="0" style={{ width: '40px', textAlign: 'center' }} placeholder="0" />
+                                <input className="admin-input" type="number" name="golsVisitante" value={matchData.golsVisitante} onChange={handleMatchChange} min="0" style={{ width: '40px', textAlign: 'center' }} />
                             </div>
                         </div>
                         {/* NOVO: Input da Rodada */}

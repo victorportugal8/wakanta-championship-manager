@@ -41,6 +41,30 @@
       "dono": ""
     }
   ],
-  "partidas": [],
-  "jogadores": []
+  "partidas": [
+    {
+      "id": 1,
+      "rodada": 1,
+      "time_casa_id": 2,
+      "time_visitante_id": 1,
+      "gols_casa": 1,
+      "gols_visitante": 0,
+      "data_partida": "2025-10-31",
+      "eventos": [
+        {
+          "jogadorId": "PlayerB",
+          "tipo": "gol",
+          "minuto": "6",
+          "partida_id": 1
+        }
+      ]
+    }
+  ],
+  "jogadores": [
+    {
+      "id": "PlayerB",
+      "nome": "Jogador B",
+      "time_id": 2
+    }
+  ]
 }
