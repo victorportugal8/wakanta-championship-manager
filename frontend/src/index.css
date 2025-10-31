@@ -160,6 +160,12 @@ h1, h2, h3 {
     text-align: right;
     flex: 1; /* Ocupa o espaço disponível */
     color: #e0e0e0; /* Texto claro */
+
+    /* ----- ADICIONANDO EMBLEMAS ----- */
+    display: flex;
+    align-items: center;
+    justify-content: flex-end; /* Alinha o (nome + emblema) à direita */
+    gap: 10px; /* Espaço entre nome e emblema */
 }
 
 .match-card .team-away {
@@ -168,6 +174,19 @@ h1, h2, h3 {
     text-align: left;
     flex: 1; /* Ocupa o espaço disponível */
     color: #e0e0e0;
+
+    /* ----- ADICIONANDO EMBLEMAS ----- */
+    display: flex;
+    align-items: center;
+    justify-content: flex-start; /* Alinha o (emblema + nome) à esquerda */
+    gap: 10px; /* Espaço entre emblema e nome */
+}
+
+/* Estilo do emblema dentro do card (menor que o da tabela) */
+.match-emblem {
+    width: 28px;
+    height: 28px;
+    object-fit: contain;
 }
 
 .match-card .score {

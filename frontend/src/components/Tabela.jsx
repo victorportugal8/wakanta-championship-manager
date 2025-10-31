@@ -12,10 +12,14 @@ export default function Tabela() {
     
     // --- NOVO: Lógica dos Resultados Recentes ---
     
-    // 1. Criar um mapa de times (ID -> Nome) para consulta rápida
+    // 1. Criar um mapa de times (ID -> Objeto) para consulta rápida
     const timesMap = useMemo(() => {
         return dadosCampeonato.times.reduce((acc, time) => {
-            acc[time.id] = time.nome; // Ex: {1: "Time Alpha", 2: "Time Beta"}
+            // Agora armazenamos o nome E o emblema (com um padrão)
+            acc[time.id] = {
+                nome: time.nome, // Ex: {1: "Barcelona", 2: "Real Madrid"}
+                emblema_url: time.emblema_url || 'img/emblemas/default.png'
+            };
             return acc;
         }, {});
     }, [dadosCampeonato.times]); // Depende apenas dos times
@@ -206,17 +210,31 @@ export default function Tabela() {
                     {partidasDaRodada.length > 0 ? (
                         partidasDaRodada.map(match => (
                             <div key={match.id} className="match-card">
-                                <span className="team-home">
-                                    {timesMap[match.time_casa_id] || 'N/A'}
-                                </span>
+                                {/* Time da Casa (agora é uma DIV com IMG) */}
+                                <div className="team-home">
+                                    {/* Usamos ?.nome para segurança */}
+                                    <span>{timesMap[match.time_casa_id]?.nome || 'N/A'}</span>
+                                    <img 
+                                        src={timesMap[match.time_casa_id]?.emblema_url} 
+                                        alt="" 
+                                        className="match-emblem" 
+                                    />
+                                </div>
                                 
                                 <span className="score">
                                     {match.gols_casa} - {match.gols_visitante}
                                 </span>
                                 
-                                <span className="team-away">
-                                    {timesMap[match.time_visitante_id] || 'N/A'}
-                                </span>
+                                {/* Time Visitante (agora é uma DIV com IMG) */}
+                                <div className="team-away">
+                                    <img 
+                                        src={timesMap[match.time_visitante_id]?.emblema_url} 
+                                        alt="" 
+                                        className="match-emblem" 
+                                    />
+                                    {/* Usamos ?.nome para segurança */}
+                                    <span>{timesMap[match.time_visitante_id]?.nome || 'N/A'}</span>
+                                </div>
                             </div>
                         ))
                     ) : (
