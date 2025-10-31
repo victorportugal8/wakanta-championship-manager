@@ -201,6 +201,7 @@ export function calcularClassificacao(dados) {
         timesMap[time.id] = {
             id: time.id,
             nome: time.nome,
+            emblema_url: time.emblema_url || 'img/emblemas/default.png', // <-- ADICIONE ESTA LINHA
             P: 0, J: 0, V: 0, E: 0, D: 0, GP: 0, GC: 0, SG: 0,
             ultimosResultados: [] // <-- MUDANÇA 1: Array inicializado
         };

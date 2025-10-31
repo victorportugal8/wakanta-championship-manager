@@ -376,9 +376,20 @@ export default function AdminTool() {
                                 <tr key={time.id}>
                                     {/* 2. Coluna Posição (com helper) */}
                                     <td className="col-pos">{getPositionElement(index)}</td>
-                                    
+                                    {/* --- ALTERAÇÃO AQUI --- */}
+                                    <td className="col-time">
+                                        <div className="team-cell-container">
+                                            <img 
+                                                src={time.emblema_url} 
+                                                alt={`Emblema do ${time.nome}`}
+                                                className="team-emblem" 
+                                            />
+                                            <span>{time.nome}</span>
+                                        </div>
+                                    </td>
+                                    {/* --- FIM DA ALTERAÇÃO --- */}
                                     {/* 3. Colunas de dados */}
-                                    <td className="col-time">{time.nome}</td>
+                                    {/* <td className="col-time">{time.nome}</td> */}
                                     <td className="col-points">{time.P}</td>
                                     <td>{time.J}</td>
                                     <td>{time.V}</td>

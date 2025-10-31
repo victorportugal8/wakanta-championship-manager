@@ -3,42 +3,50 @@
     {
       "id": 1,
       "nome": "Arsenal",
-      "dono": ""
+      "dono": "",
+      "emblema_url": "img/emblemas/arsenal.png"
     },
     {
       "id": 2,
       "nome": "Barcelona",
-      "dono": ""
+      "dono": "",
+      "emblema_url": "img/emblemas/barcelona.png"
     },
     {
       "id": 3,
       "nome": "Bayern de Munique",
-      "dono": ""
+      "dono": "",
+      "emblema_url": "img/emblemas/bayern-de-munique.png"
     },
     {
       "id": 4,
       "nome": "Botafogo",
-      "dono": ""
+      "dono": "",
+      "emblema_url": "img/emblemas/botafogo.png"
     },
     {
       "id": 5,
       "nome": "Chelsea",
-      "dono": ""
+      "dono": "",
+      "emblema_url": "img/emblemas/chelsea.png"
     },
     {
       "id": 6,
       "nome": "Flamengo",
-      "dono": ""
+      "dono": "",
+      "emblema_url": "img/emblemas/flamengo.png"
     },
     {
       "id": 7,
       "nome": "Manchester City",
-      "dono": ""
+      "dono": "",
+      "emblema_url": "img/emblemas/manchester-city.png"
     },
     {
       "id": 8,
       "nome": "Milan",
-      "dono": ""
+      "dono": "",
+      "emblema_url": "img/emblemas/milan.png"
     }
   ],
   "partidas": [

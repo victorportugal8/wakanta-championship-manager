@@ -303,3 +303,32 @@ h1, h2, h3 {
     width: 150px; /* Largura para caber os 5 círculos + gaps */
     text-align: left;
 }
+
+/* ================================================= */
+/* Estilos do Emblema do Time (Tabela.jsx) */
+/* ================================================= */
+
+/* Contêiner para alinhar emblema e nome na mesma célula */
+.team-cell-container {
+    display: flex;
+    align-items: center; /* Alinha verticalmente */
+    gap: 12px;           /* Espaço entre emblema e nome */
+}
+
+/* Estilo do emblema (imagem) */
+.team-emblem {
+    width: 30px;         /* Tamanho fixo */
+    height: 30px;        /* Tamanho fixo */
+    object-fit: contain; /* Garante que a imagem caiba sem distorcer */
+    flex-shrink: 0;      /* Impede que a imagem seja espremida */
+}
+
+/* * Ajuste na coluna "col-time" 
+ * (O seletor já existe no seu CSS, estamos apenas garantindo a largura)
+*/
+.col-time {
+    /* Ajuste a largura se necessário para caber tudo */
+    width: auto; /* Deixa auto, mas podemos fixar se quebrar */
+    min-width: 200px; 
+    font-weight: 600; /* Dando um leve destaque ao nome */
+}
