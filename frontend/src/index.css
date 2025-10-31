@@ -351,3 +351,22 @@ h1, h2, h3 {
     min-width: 200px; 
     font-weight: 600; /* Dando um leve destaque ao nome */
 }
+
+/* ================================================= */
+/* Estilos do Emblema nos Rankings (Artilharia/Assists) */
+/* ================================================= */
+
+/* Célula da tabela (TD) que contém o emblema */
+.col-ranking-emblem {
+    width: 60px; /* Largura fixa para a coluna do emblema */
+    text-align: center; /* Centraliza o emblema na célula */
+}
+
+/* A imagem do emblema (IMG) */
+.ranking-emblem {
+    width: 28px;
+    height: 28px;
+    object-fit: contain;
+    /* Alinha a imagem verticalmente com o texto das outras células */
+    vertical-align: middle; 
+}

@@ -305,7 +305,15 @@ export function calcularRankingsIndividuais(dados) {
     const contagem = {};
 
     const jogadoresMap = dados.jogadores.reduce((acc, j) => {
-        acc[j.id] = { nome: j.nome, time: dados.times.find(t => t.id === j.time_id)?.nome || 'N/A' };
+        // 1. Encontra o time completo do jogador
+        const timeDoJogador = dados.times.find(t => t.id === j.time_id);
+        
+        // 2. Armazena o nome do jogador, o nome do time e o emblema
+        acc[j.id] = { 
+            nome: j.nome, 
+            timeNome: timeDoJogador?.nome || 'N/A',
+            timeEmblema: timeDoJogador?.emblema_url || 'img/emblemas/default.png' // Padrão
+        };
         return acc;
     }, {});
 

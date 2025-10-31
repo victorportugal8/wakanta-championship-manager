@@ -258,7 +258,17 @@ export default function Tabela() {
                                 <tr key={jogador.jogadorId}>
                                     <td>{index + 1}</td>
                                     <td>{jogador.nome}</td>
-                                    <td>{jogador.time}</td>
+                                    
+                                    {/* --- CÉLULA DO EMBLEMA --- */}
+                                    <td className="col-ranking-emblem">
+                                        <img 
+                                            src={jogador.timeEmblema} 
+                                            alt={jogador.timeNome}
+                                            title={jogador.timeNome} /* Tooltip com nome do time */
+                                            className="ranking-emblem"
+                                        />
+                                    </td>
+                                    
                                     <td style={{ color: '#e67e22', fontWeight: 'bold' }}>{jogador.gols}</td>
                                 </tr>
                             ))}
@@ -276,7 +286,17 @@ export default function Tabela() {
                                 <tr key={jogador.jogadorId}>
                                     <td>{index + 1}</td>
                                     <td>{jogador.nome}</td>
-                                    <td>{jogador.time}</td>
+                                    
+                                    {/* --- CÉLULA DO EMBLEMA --- */}
+                                    <td className="col-ranking-emblem">
+                                        <img 
+                                            src={jogador.timeEmblema} 
+                                            alt={jogador.timeNome}
+                                            title={jogador.timeNome} /* Tooltip com nome do time */
+                                            className="ranking-emblem"
+                                        />
+                                    </td>
+                                    
                                     <td style={{ color: '#3498db', fontWeight: 'bold' }}>{jogador.assistencias}</td>
                                 </tr>
                             ))}
