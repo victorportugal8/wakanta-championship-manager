@@ -1,5 +1,5 @@
 // src/components/Tabela.jsx
-import React, { useMemo } from 'react';
+import React, { useMemo, useState } from 'react';
 import dadosCampeonato from '../data/campeonato.json'; 
 import { calcularClassificacao, calcularRankingsIndividuais } from '../utils/calculadora';
 
@@ -20,11 +20,38 @@ export default function Tabela() {
         }, {});
     }, [dadosCampeonato.times]); // Depende apenas dos times
 
-    // 2. Obter as últimas 5 partidas (as mais recentes)
-    const recentMatches = useMemo(() => {
-        // Clonamos o array, invertemos (para os mais novos virem primeiro) e pegamos 5
-        return [...dadosCampeonato.partidas].reverse().slice(0, 5);
-    }, [dadosCampeonato.partidas]); // Depende das partidas
+    // // 2. Obter as últimas 5 partidas (as mais recentes)
+    // const recentMatches = useMemo(() => {
+    //     // Clonamos o array, invertemos (para os mais novos virem primeiro) e pegamos 5
+    //     return [...dadosCampeonato.partidas].reverse().slice(0, 5);
+    // }, [dadosCampeonato.partidas]); // Depende das partidas
+
+    // --- NOVO: Lógica das Rodadas ---
+    
+    // 1. Encontrar o número total de rodadas registradas
+    const totalRodadas = useMemo(() => {
+        if (dadosCampeonato.partidas.length === 0) return 1;
+        // Encontra o maior número de rodada no JSON
+        return Math.max(...dadosCampeonato.partidas.map(p => p.rodada));
+    }, [dadosCampeonato.partidas]);
+
+    // 2. Estado para controlar a rodada selecionada (começa na 1)
+    const [rodadaSelecionada, setRodadaSelecionada] = useState(1);
+
+    // 3. Filtrar as partidas SOMENTE da rodada selecionada
+    const partidasDaRodada = useMemo(() => {
+        return dadosCampeonato.partidas
+            .filter(p => p.rodada === rodadaSelecionada)
+            .sort((a, b) => a.id - b.id); // Ordena pela ordem de cadastro
+    }, [rodadaSelecionada, dadosCampeonato.partidas]);
+
+    // 4. Handlers para os botões
+    const handleProximaRodada = () => {
+        setRodadaSelecionada(prev => Math.min(prev + 1, totalRodadas));
+    };
+    const handleRodadaAnterior = () => {
+        setRodadaSelecionada(prev => Math.max(prev - 1, 1));
+    };
 
     // --- Renderização do Cabeçalho da Tabela ---
     const renderHeader = (headers) => (
@@ -70,28 +97,54 @@ export default function Tabela() {
                 </table>
             </div>
 
-            {/* --- NOVO: Seção de Resultados Recentes --- */}
+            {/* --- SUBSTITUÍDO: Seção de Rodadas (no lugar de "Últimos Resultados") --- */}
             <div style={{ marginBottom: '40px' }}>
-                <h2>Últimos Resultados</h2>
+                
+                {/* Navegador de Rodadas */}
+                <div className="round-navigator">
+                    <button 
+                        className="round-btn" 
+                        onClick={handleRodadaAnterior}
+                        disabled={rodadaSelecionada === 1} // Desabilita no início
+                    >
+                        &lt; Anterior
+                    </button>
+                    
+                    <h3>Rodada {rodadaSelecionada}</h3>
+                    
+                    <button 
+                        className="round-btn" 
+                        onClick={handleProximaRodada}
+                        disabled={rodadaSelecionada === totalRodadas} // Desabilita no fim
+                    >
+                        Próxima &gt;
+                    </button>
+                </div>
+                
+                {/* Container dos Cards de Partida (reutilizando o CSS anterior) */}
                 <div className="recent-matches-container">
-                    {recentMatches.map(match => (
-                        <div key={match.id} className="match-card">
-                            {/* Time da Casa */}
-                            <span className="team-home">
-                                {timesMap[match.time_casa_id] || 'Time Desconhecido'}
-                            </span>
-                            
-                            {/* Placar */}
-                            <span className="score">
-                                {match.gols_casa} - {match.gols_visitante}
-                            </span>
-                            
-                            {/* Time Visitante */}
-                            <span className="team-away">
-                                {timesMap[match.time_visitante_id] || 'Time Desconhecido'}
-                            </span>
+                    {partidasDaRodada.length > 0 ? (
+                        partidasDaRodada.map(match => (
+                            <div key={match.id} className="match-card">
+                                <span className="team-home">
+                                    {timesMap[match.time_casa_id] || 'N/A'}
+                                </span>
+                                
+                                <span className="score">
+                                    {match.gols_casa} - {match.gols_visitante}
+                                </span>
+                                
+                                <span className="team-away">
+                                    {timesMap[match.time_visitante_id] || 'N/A'}
+                                </span>
+                            </div>
+                        ))
+                    ) : (
+                        // Mensagem para rodadas futuras (sem jogos cadastrados)
+                        <div style={{ color: '#888', textAlign: 'center', gridColumn: '1 / -1' }}>
+                            Nenhuma partida registrada para esta rodada.
                         </div>
-                    ))}
+                    )}
                 </div>
             </div>
 

@@ -16,6 +16,7 @@ export default function AdminTool() {
         timeVisitanteId: '',  // Alterado (de times[1]?.id...)
         golsCasa: '',         // Alterado (de 0)
         golsVisitante: '',    // Alterado (de 0)
+        rodadas: '',           // Novo campo para rodada
         eventos: [],
     });
 
@@ -42,6 +43,7 @@ export default function AdminTool() {
         // 3. Montar o objeto da nova partida
         const novoMatchObjeto = {
             id: proximoId,
+            rodada: Number(newMatch.rodada),
             // Usamos Number() para garantir que o resultado seja um número ou NaN
             time_casa_id: Number(newMatch.timeCasaId), 
             time_visitante_id: Number(newMatch.timeVisitanteId),
@@ -90,8 +92,8 @@ export default function AdminTool() {
         
         // --- MUDANÇA AQUI ---
         // Validação atualizada para incluir os IDs dos times
-        if (!matchData.timeCasaId || !matchData.timeVisitanteId || matchData.golsCasa === '' || matchData.golsVisitante === '') {
-            alert('Por favor, preencha todos os campos da partida (Times e Placar) antes de gerar o JSON.');
+        if (!matchData.timeCasaId || !matchData.timeVisitanteId || matchData.golsCasa === '' || matchData.golsVisitante === ''|| !matchData.rodada) {
+            alert('Por favor, preencha TODOS os campos da partida (Times, Placar e Rodada) antes de gerar o JSON.');
             return; // Sai da função se a validação falhar
         }
         
@@ -196,6 +198,20 @@ export default function AdminTool() {
                                 <span style={{ color: '#e0e0e0' }}>-</span>
                                 <input className="admin-input" type="number" name="golsVisitante" value={matchData.golsVisitante} onChange={handleMatchChange} min="0" style={{ width: '40px', textAlign: 'center' }} placeholder="0" />
                             </div>
+                        </div>
+                        {/* NOVO: Input da Rodada */}
+                        <div style={{ marginLeft: '40px' }}>
+                            <label style={{ fontWeight: 'bold', color: '#e0e0e0', display: 'block', marginBottom: '5px' }}>Rodada Nº:</label>
+                            <input 
+                                className="admin-input" 
+                                type="number" 
+                                name="rodada" 
+                                value={matchData.rodada} 
+                                onChange={handleMatchChange} 
+                                min="1" 
+                                style={{ width: '50px', textAlign: 'center' }} 
+                                placeholder="1" 
+                            />
                         </div>
                     </div>
                 </div>

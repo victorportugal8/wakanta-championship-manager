@@ -177,3 +177,42 @@ h1, h2, h3 {
     margin: 0 25px; /* Espaçamento entre os times e o placar */
     flex-shrink: 0; /* Impede que o placar seja espremido */
 }
+
+/* ================================================= */
+/* Estilos do Navegador de Rodadas (Tabela.jsx) */
+/* ================================================= */
+
+.round-navigator {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.round-navigator h3 {
+    margin: 0;
+    color: #00bcd4; /* Destaque azul */
+    font-size: 1.5em;
+}
+
+.round-btn {
+    background-color: #00bcd4;
+    color: #121212;
+    border: none;
+    border-radius: 6px;
+    padding: 10px 15px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.round-btn:hover {
+    background-color: #4dd0e1;
+}
+
+/* Estilo para quando o botão estiver desabilitado */
+.round-btn:disabled {
+    background-color: #333; /* Fundo cinza escuro */
+    color: #666; /* Texto apagado */
+    cursor: not-allowed;
+}
