@@ -29,7 +29,7 @@ O sistema é dividido em duas áreas: uma **Área Pública (Vitrine)** para todo
 
 1. **Área Pública (Visualização)**
 
-    * **Tabela de Classificação:** Tabela completa e ordenada, calculada com base nos resultados do JSON. Exibição de: Posição, Time, Pontos (P), Jogos (J), Vitórias (V), Empates (E), Derrotas (D), Gols Pró (GP), Gols Contra (GC) e Saldo de Gols (SG). Com critérios de desempate avançados (Ponto, Confronto Direto, Vitórias, etc.).
+    * **Tabela de Classificação:** Tabela completa e ordenada, calculada com base nos resultados do JSON. Exibição de: Posição, Time, Pontos (P), Jogos (J), Vitórias (V), Empates (E), Derrotas (D), Gols Pró (GP), Gols Contra (GC), Saldo de Gols (SG) e Últimos 5. Com critérios de desempate avançados (Ponto, Confronto Direto, Vitórias, etc.).
 
     * **Artilharia:** Lista dos principais goleadores do campeonato, mostrando o total de gols e o time de cada jogador.
 
