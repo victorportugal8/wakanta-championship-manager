@@ -151,6 +151,69 @@ export default function AdminTool() {
         alert(`✅ Arquivo ${filename} gerado e pronto para download! Salve e substitua o arquivo no seu projeto.`);
     };
 
+    // --- NOVO: FUNÇÕES HELPER (Copiadas de Tabela.jsx) ---
+    // Adicione este bloco inteiro antes do 'return ()'
+
+    /**
+     * Retorna o elemento JSX (span) para a posição.
+     */
+    const getPositionElement = (index) => {
+        const position = index + 1;
+        
+        if (position >= 1 && position <= 2) {
+            return <span className="pos-badge pos-top2">{position}</span>;
+        } else if (position >= 3 && position <= 6) {
+            return <span className="pos-badge pos-next4">{position}</span>;
+        } else {
+            return <span className="pos-normal">{position}</span>;
+        }
+    };
+    
+    /**
+     * Retorna o elemento JSX (span) para um resultado (V, E, D).
+     */
+    const getResultElement = (resultado, index) => {
+        let className = '';
+        let title = '';
+
+        switch (resultado) {
+            case 'V':
+                className = 'result-win';
+                title = 'Vitória';
+                break;
+            case 'E':
+                className = 'result-draw';
+                title = 'Empate';
+                break;
+            case 'D':
+                className = 'result-loss';
+                title = 'Derrota';
+                break;
+            default:
+                className = 'result-draw';
+                title = 'Indefinido';
+        }
+
+        return (
+            <span key={index} className={`result-badge ${className}`} title={title}>
+                {resultado}
+            </span>
+        );
+    };
+
+    /**
+     * Renderiza o cabeçalho da tabela.
+     */
+    const renderHeader = (headers) => (
+        <thead>
+            <tr>
+                {headers.map((h, i) => (
+                    <th key={i}>{h}</th> 
+                ))}
+            </tr>
+        </thead>
+    );
+
     // --- Renderização do Componente ---
     return (
         <div className="container" style={{ maxWidth: '900px' }}>
@@ -301,20 +364,43 @@ export default function AdminTool() {
                     
                     {/* Pré-visualização simplificada */}
                     <h3>Pré-visualização da Tabela (Nova Ordem)</h3>
+                    
+                    {/* --- TABELA DE PREVIEW ATUALIZADA --- */}
                     <table className="score-table">
-                        <thead>
-                            <tr style={{ backgroundColor: '#eee' }}><th>Time</th><th>J</th><th>P</th><th>V</th><th>E</th><th>D</th><th>SG</th></tr>
-                        </thead>
+                        
+                        {/* 1. Cabeçalho completo (usando a função renderHeader) */}
+                        {renderHeader(['Pos', 'Time', 'P', 'J', 'V', 'E', 'D', 'GP', 'GC', 'SG', 'Últimos 5'])}
+                        
                         <tbody>
-                            {tabelaTeste && tabelaTeste.map(time => (
+                            {tabelaTeste && tabelaTeste.map((time, index) => (
                                 <tr key={time.id}>
-                                    <td>{time.nome}</td>
+                                    {/* 2. Coluna Posição (com helper) */}
+                                    <td className="col-pos">{getPositionElement(index)}</td>
+                                    
+                                    {/* 3. Colunas de dados */}
+                                    <td className="col-time">{time.nome}</td>
+                                    <td className="col-points">{time.P}</td>
                                     <td>{time.J}</td>
-                                    <td>{time.P}</td>
-                                    <td>{time.V}</td> {/* Exibe o número de vitórias */}
-                                    <td>{time.E}</td> {/* Exibe o número de empates */}
-                                    <td>{time.D}</td> {/* Exibe o número de derrotas */}
-                                    <td>{time.SG}</td> {/* Exibe o saldo de gols */}
+                                    <td>{time.V}</td>
+                                    <td>{time.E}</td>
+                                    <td>{time.D}</td>
+                                    <td>{time.GP}</td>
+                                    <td>{time.GC}</td>
+                                    
+                                    {/* 4. Coluna SG (com classes de cor) */}
+                                    <td className={`col-sg ${time.SG > 0 ? 'positive-sg' : (time.SG < 0 ? 'negative-sg' : '')}`}>
+                                        {time.SG}
+                                    </td>
+
+                                    {/* 5. Coluna Forma (com helper) */}
+                                    <td className="col-form">
+                                        <div className="recent-form-container">
+                                            {/* Usamos time.ultimosResultados (que já vem da calculadora) */}
+                                            {time.ultimosResultados && time.ultimosResultados.map((res, i) => (
+                                                getResultElement(res, i)
+                                            ))}
+                                        </div>
+                                    </td>
                                 </tr>
                             ))}
                         </tbody>
