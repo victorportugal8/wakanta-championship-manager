@@ -29,19 +29,19 @@ O sistema é dividido em duas áreas: uma **Área Pública (Vitrine)** para todo
 
 1. **Área Pública (Visualização)**
 
-    * **Tabela de Classificação:** Tabela completa e ordenada, calculada com base nos resultados do JSON. Exibição de: Posição, Time, Pontos (P), Jogos (J), Vitórias (V), Empates (E), Derrotas (D), Gols Pró (GP), Gols Contra (GC) e Saldo de Gols (SG).
+    * **Tabela de Classificação:** Tabela completa e ordenada, calculada com base nos resultados do JSON. Exibição de: Posição, Time, Pontos (P), Jogos (J), Vitórias (V), Empates (E), Derrotas (D), Gols Pró (GP), Gols Contra (GC) e Saldo de Gols (SG). Com critérios de desempate avançados (Ponto, Confronto Direto, Vitórias, etc.).
 
     * **Artilharia:** Lista dos principais goleadores do campeonato, mostrando o total de gols e o time de cada jogador.
 
     * **Rei das Assistências:** Lista dos jogadores com o maior número de passes para gol.
 
-    * **Resultados Recentes:** Visualização do placar final e dos eventos (gols/assistências) das últimas partidas cadastradas.
+    * **Navegador de Rodadas:** Permite ao usuário navegar por todas as rodadas do campeonato (passadas e futuras) e visualizar os resultados de cada partida daquela rodada.
 
 2. **Ferramenta de Admin (Gerenciamento Manual)**
 
     A Ferramenta de Admin é uma seção do React acessível apenas ao administrador, que permite gerenciar os dados do campeonato.
 
-    * **Entrada de Resultados:** Formulário dedicado para registrar novos resultados de partidas, gols, assistências e cartões.
+    * **Entrada de Resultados:** Formulário dedicado para registrar novos resultados de partidas, o número da rodada, gols, assistências e cartões.
 
     * **Geração do JSON:** Após inserir um novo resultado, a ferramenta utiliza a lógica JavaScript para:
 
