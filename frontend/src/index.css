@@ -197,6 +197,13 @@ h1, h2, h3 {
     flex-shrink: 0; /* Impede que o placar seja espremido */
 }
 
+/* Estilo para o placar quando a partida está agendada ("vs") */
+.match-card .score-scheduled {
+    color: #777; /* Cor cinza, mais apagada */
+    font-size: 1.2em; /* Um pouco menor que o placar final */
+    font-weight: 500;
+}
+
 /* ================================================= */
 /* Estilos do Navegador de Rodadas (Tabela.jsx) */
 /* ================================================= */

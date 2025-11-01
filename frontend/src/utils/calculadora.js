@@ -163,10 +163,13 @@ function compareHeadToHead(teamA, teamB, partidas) {
     let scoreA = 0;
     let scoreB = 0;
 
-    // 1. Filtra apenas as partidas jogadas entre os times A e B
+    // 1. Filtra apenas as partidas JOGADAS (não nulas) entre os times A e B
     const h2hMatches = partidas.filter(p => 
-        (p.time_casa_id === teamA.id && p.time_visitante_id === teamB.id) ||
-        (p.time_casa_id === teamB.id && p.time_visitante_id === teamA.id)
+        p.gols_casa !== null && // <-- ADICIONADO: Garante que a partida aconteceu
+        (
+            (p.time_casa_id === teamA.id && p.time_visitante_id === teamB.id) ||
+            (p.time_casa_id === teamB.id && p.time_visitante_id === teamA.id)
+        )
     );
 
     // 2. Calcula os pontos apenas nesses jogos (Vitória = 3, Empate = 1)
@@ -216,10 +219,13 @@ export function calcularClassificacao(dados) {
         return a.id - b.id; // Desempata pela ID da partida
     });
 
+    // --- MUDANÇA: Filtra apenas as partidas que já aconteceram ---
+    const partidasJogadas = partidasOrdenadas.filter(p => p.gols_casa !== null);
 
     // 2. Itera sobre as partidas (ORDENADAS) para somar os resultados
     //    (Usamos 'partidasOrdenadas' em vez de 'dados.partidas')
-    partidasOrdenadas.forEach(partida => { // <-- MUDANÇA 3: Usando o array ordenado
+    partidasJogadas.forEach(partida => { // <-- ALTERADO
+    // partidasOrdenadas.forEach(partida => { // <-- MUDANÇA 3: Usando o array ordenado
         const casa = timesMap[partida.time_casa_id];
         const visitante = timesMap[partida.time_visitante_id];
         
@@ -272,8 +278,9 @@ export function calcularClassificacao(dados) {
         if (a.P !== b.P) {
             return b.P - a.P;
         }
-        // 2º CRITÉRIO: Confronto Direto (H2H)
-        const h2hResult = compareHeadToHead(a, b, dados.partidas);
+        // 2º CRITÉRIO: Confronto Direto (H2H) - SÓ se os pontos forem iguais
+        // Usamos 'partidasJogadas' para garantir que H2H não conte jogos futuros
+        const h2hResult = compareHeadToHead(a, b, partidasJogadas); // <-- ALTERADO
         if (h2hResult !== 0) {
             return h2hResult * -1;
         }

@@ -221,8 +221,11 @@ export default function Tabela() {
                                     />
                                 </div>
                                 
-                                <span className="score">
-                                    {match.gols_casa} - {match.gols_visitante}
+                                <span className={`score ${match.gols_casa === null ? 'score-scheduled' : ''}`}>
+                                    {match.gols_casa !== null
+                                        ? `${match.gols_casa} - ${match.gols_visitante}`
+                                        : 'vs'
+                                    }
                                 </span>
                                 
                                 {/* Time Visitante (agora é uma DIV com IMG) */}
