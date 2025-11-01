@@ -511,7 +511,7 @@ export default function AdminTool() {
                             type="button"
                             onClick={() => handleRemoverSlotPartida(index)}
                             disabled={partidasParaAgendar.length <= 1} // Não deixa remover o último
-                            style={{ /* ... estilo de botão de remoção (vermelho) ... */ }}
+                            className="btn-remove" /* <-- CORRIGIDO */
                         >
                             X
                         </button>

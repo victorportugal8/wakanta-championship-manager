@@ -377,3 +377,31 @@ h1, h2, h3 {
     /* Alinha a imagem verticalmente com o texto das outras células */
     vertical-align: middle; 
 }
+
+/* ================================================= */
+/* Estilos de Botões Auxiliares (AdminTool) */
+/* ================================================= */
+
+.btn-remove {
+    background-color: #ff5252; /* Vermelho Neon (do .negative-sg) */
+    color: #121212; /* Texto escuro para alto contraste */
+    border: none;
+    border-radius: 6px;
+    padding: 8px 14px; /* Um pouco menor que o btn-primary */
+    font-weight: 700; /* Negrito (para o 'X') */
+    font-size: 0.9em;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    line-height: 1; /* Garante alinhamento */
+}
+
+.btn-remove:hover {
+    background-color: #ff8a80; /* Vermelho mais claro no hover */
+}
+
+/* Estilo para quando o botão estiver desabilitado (como o .round-btn) */
+.btn-remove:disabled {
+    background-color: #333; /* Fundo cinza escuro */
+    color: #666; /* Texto apagado */
+    cursor: not-allowed;
+}
