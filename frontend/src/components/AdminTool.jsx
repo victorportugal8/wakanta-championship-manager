@@ -1,7 +1,7 @@
 import { useState, useMemo } from 'react';
 // Importa os dados antigos diretamente (pode ser o que está na sua pasta data/)
 import dadosAntigos from '../data/campeonato.json'; 
-import { calcularClassificacao } from '../utils/calculadora';
+import { calcularClassificacao, calcularRankingsIndividuais } from '../utils/calculadora';
 
 // Componente principal da ferramenta de administração
 export default function AdminTool() {
@@ -30,7 +30,7 @@ export default function AdminTool() {
     // Estados para a saída e pré-visualização
     const [jsonGerado, setJsonGerado] = useState('');
     const [tabelaTeste, setTabelaTeste] = useState(null);
-    // const [rankingsTeste, setRankingsTeste] = useState(null);
+    const [rankingsTeste, setRankingsTeste] = useState(null);
 
     // Estado para o formulário de NOVO EVENTO (Reutilizado)
     const [novoEvento, setNovoEvento] = useState({ 
@@ -183,10 +183,10 @@ export default function AdminTool() {
             // Recalcula a pré-visualização com os novos dados
             const novosDadosObjeto = JSON.parse(novaStringJson);
             const tabelaCalculada = calcularClassificacao(novosDadosObjeto);
-            // const rankingsCalculados = calcularRankingsIndividuais(novosDadosObjeto);
+            const rankingsCalculados = calcularRankingsIndividuais(novosDadosObjeto);
             
             setTabelaTeste(tabelaCalculada);
-            // setRankingsTeste(rankingsCalculados);
+            setRankingsTeste(rankingsCalculados);
             // --- FIM DA ADIÇÃO ---
             alert(`✅ Rodada ${rodadaAgendada} agendada com ${novasPartidasJSON.length} jogos! Role para baixo e copie o JSON.`);
 
@@ -340,10 +340,10 @@ export default function AdminTool() {
             setTabelaTeste(tabelaCalculada);
 
             // --- ADICIONADO (CORRIGE BUG 2) ---
-            // const rankingsCalculados = calcularRankingsIndividuais(novosDados);
+            const rankingsCalculados = calcularRankingsIndividuais(novosDados);
             
             setTabelaTeste(tabelaCalculada);
-            // setRankingsTeste(rankingsCalculados);
+            setRankingsTeste(rankingsCalculados);
             // --- FIM DA ADIÇÃO ---
 
             alert('✅ Resultado salvo! JSON gerado. Role para baixo e copie.');
@@ -727,6 +727,67 @@ export default function AdminTool() {
                             ))}
                         </tbody>
                     </table>
+
+                    {/* --- INÍCIO DO NOVO BLOCO DE RANKINGS --- */}
+                    <div style={{ display: 'flex', justifyContent: 'space-between', gap: '30px', marginTop: '40px' }}>
+                        
+                        {/* --- Seção de Artilharia --- */}
+                        <div style={{ flex: 1 }}>
+                            <h2>⚽ Artilharia (Top 10)</h2>
+                            <table className="score-table">
+                                {/* Usamos o helper renderHeader que já existe */}
+                                {renderHeader(['Pos', 'Jogador', 'Time', 'Gols'])}
+                                <tbody>
+                                    {/* Verificamos se rankingsTeste existe antes de mapear */}
+                                    {rankingsTeste && rankingsTeste.artilharia.slice(0, 10).map((jogador, index) => (
+                                        <tr key={jogador.jogadorId}>
+                                            <td>{index + 1}</td>
+                                            <td>{jogador.nome}</td>
+                                            {/* Célula do Emblema (usa CSS do index.css) */}
+                                            <td className="col-ranking-emblem">
+                                                <img 
+                                                    src={jogador.timeEmblema} 
+                                                    alt={jogador.timeNome}
+                                                    title={jogador.timeNome}
+                                                    className="ranking-emblem"
+                                                />
+                                            </td>
+                                            <td style={{ color: '#e67e22', fontWeight: 'bold' }}>{jogador.gols}</td>
+                                        </tr>
+                                    ))}
+                                </tbody>
+                            </table>
+                        </div>
+
+                        {/* --- Seção de Assistências --- */}
+                        <div style={{ flex: 1 }}>
+                            <h2>👟 Rei das Assistências (Top 10)</h2>
+                            <table className="score-table">
+                                {/* Usamos o helper renderHeader que já existe */}
+                                {renderHeader(['Pos', 'Jogador', 'Time', 'Assists'])}
+                                <tbody>
+                                    {/* Verificamos se rankingsTeste existe antes de mapear */}
+                                    {rankingsTeste && rankingsTeste.assistencias.slice(0, 10).map((jogador, index) => (
+                                        <tr key={jogador.jogadorId}>
+                                            <td>{index + 1}</td>
+                                            <td>{jogador.nome}</td>
+                                            {/* Célula do Emblema (usa CSS do index.css) */}
+                                            <td className="col-ranking-emblem">
+                                                <img 
+                                                    src={jogador.timeEmblema} 
+                                                    alt={jogador.timeNome}
+                                                    title={jogador.timeNome}
+                                                    className="ranking-emblem"
+                                                />
+                                            </td>
+                                            <td style={{ color: '#3498db', fontWeight: 'bold' }}>{jogador.assistencias}</td>
+                                        </tr>
+                                    ))}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    {/* --- FIM DO NOVO BLOCO DE RANKINGS --- */}
                 </div>
             )}
         </div>
