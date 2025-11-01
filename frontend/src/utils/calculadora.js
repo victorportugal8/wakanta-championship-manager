@@ -315,25 +315,27 @@ export function calcularRankingsIndividuais(dados) {
         // 1. Encontra o time completo do jogador
         const timeDoJogador = dados.times.find(t => t.id === j.time_id);
         
-        // 2. Armazena o nome do jogador, o nome do time e o emblema
-        acc[j.id] = { 
+        // --- CORRIGIDO: Força a chave a ser String ---
+        acc[String(j.id)] = { 
             nome: j.nome, 
             timeNome: timeDoJogador?.nome || 'N/A',
-            timeEmblema: timeDoJogador?.emblema_url || 'img/emblemas/default.png' // Padrão
+            timeEmblema: timeDoJogador?.emblema_url || 'img/emblemas/default.png'
         };
         return acc;
     }, {});
 
     dados.partidas.forEach(partida => {
         partida.eventos.forEach(evento => {
-            if (!contagem[evento.jogadorId]) {
-                contagem[evento.jogadorId] = { gols: 0, assistencias: 0 };
+            // --- CORRIGIDO: Força o acesso via String ---
+            const jogadorIdStr = String(evento.jogadorId);
+            if (!contagem[jogadorIdStr]) {
+                contagem[jogadorIdStr] = { gols: 0, assistencias: 0 };
             }
 
             if (evento.tipo === 'gol') {
-                contagem[evento.jogadorId].gols += 1;
+                contagem[jogadorIdStr].gols += 1;
             } else if (evento.tipo === 'assistencia') {
-                contagem[evento.jogadorId].assistencias += 1;
+                contagem[jogadorIdStr].assistencias += 1;
             }
         });
     });

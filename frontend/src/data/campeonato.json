@@ -53,26 +53,156 @@
     {
       "id": 1,
       "rodada": 1,
-      "time_casa_id": 2,
-      "time_visitante_id": 1,
-      "gols_casa": 1,
-      "gols_visitante": 0,
-      "data_partida": "2025-10-31",
+      "time_casa_id": 1,
+      "time_visitante_id": 2,
+      "gols_casa": 0,
+      "gols_visitante": 1,
+      "data_partida": null,
       "eventos": [
         {
           "jogadorId": "PlayerB",
           "tipo": "gol",
-          "minuto": "6",
+          "minuto": 7,
           "partida_id": 1
         }
       ]
+    },
+    {
+      "id": 2,
+      "rodada": 1,
+      "time_casa_id": 3,
+      "time_visitante_id": 4,
+      "gols_casa": null,
+      "gols_visitante": null,
+      "data_partida": null,
+      "eventos": []
+    },
+    {
+      "id": 3,
+      "rodada": 1,
+      "time_casa_id": 5,
+      "time_visitante_id": 6,
+      "gols_casa": null,
+      "gols_visitante": null,
+      "data_partida": null,
+      "eventos": []
+    },
+    {
+      "id": 4,
+      "rodada": 1,
+      "time_casa_id": 7,
+      "time_visitante_id": 8,
+      "gols_casa": null,
+      "gols_visitante": null,
+      "data_partida": null,
+      "eventos": []
+    },
+    {
+      "id": 5,
+      "rodada": 2,
+      "time_casa_id": 1,
+      "time_visitante_id": 8,
+      "gols_casa": null,
+      "gols_visitante": null,
+      "data_partida": null,
+      "eventos": []
+    },
+    {
+      "id": 6,
+      "rodada": 2,
+      "time_casa_id": 2,
+      "time_visitante_id": 7,
+      "gols_casa": null,
+      "gols_visitante": null,
+      "data_partida": null,
+      "eventos": []
+    },
+    {
+      "id": 7,
+      "rodada": 2,
+      "time_casa_id": 3,
+      "time_visitante_id": 6,
+      "gols_casa": null,
+      "gols_visitante": null,
+      "data_partida": null,
+      "eventos": []
+    },
+    {
+      "id": 8,
+      "rodada": 2,
+      "time_casa_id": 4,
+      "time_visitante_id": 5,
+      "gols_casa": null,
+      "gols_visitante": null,
+      "data_partida": null,
+      "eventos": []
+    },
+    {
+      "id": 9,
+      "rodada": 3,
+      "time_casa_id": 1,
+      "time_visitante_id": 7,
+      "gols_casa": null,
+      "gols_visitante": null,
+      "data_partida": null,
+      "eventos": []
+    },
+    {
+      "id": 10,
+      "rodada": 3,
+      "time_casa_id": 2,
+      "time_visitante_id": 8,
+      "gols_casa": null,
+      "gols_visitante": null,
+      "data_partida": null,
+      "eventos": []
+    },
+    {
+      "id": 11,
+      "rodada": 3,
+      "time_casa_id": 3,
+      "time_visitante_id": 5,
+      "gols_casa": null,
+      "gols_visitante": null,
+      "data_partida": null,
+      "eventos": []
+    },
+    {
+      "id": 12,
+      "rodada": 3,
+      "time_casa_id": 4,
+      "time_visitante_id": 6,
+      "gols_casa": null,
+      "gols_visitante": null,
+      "data_partida": null,
+      "eventos": []
     }
   ],
   "jogadores": [
     {
+      "id": "PlayerA",
+      "nome": "Jogador A",
+      "time_id": 1
+    },
+    {
       "id": "PlayerB",
       "nome": "Jogador B",
       "time_id": 2
+    },
+    {
+      "id": "PlayerC",
+      "nome": "Jogador C",
+      "time_id": 3
+    },
+    {
+      "id": "PlayerD",
+      "nome": "Jogador D",
+      "time_id": 4
+    },
+    {
+      "id": "PlayerE",
+      "nome": "Jogador E",
+      "time_id": 5
     }
   ]
 }

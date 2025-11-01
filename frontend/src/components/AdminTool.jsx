@@ -30,6 +30,8 @@ export default function AdminTool() {
     // Estados para a saída e pré-visualização
     const [jsonGerado, setJsonGerado] = useState('');
     const [tabelaTeste, setTabelaTeste] = useState(null);
+    // const [rankingsTeste, setRankingsTeste] = useState(null);
+
     // Estado para o formulário de NOVO EVENTO (Reutilizado)
     const [novoEvento, setNovoEvento] = useState({ 
         jogadorId: jogadores[0]?.id || '', 
@@ -177,6 +179,15 @@ export default function AdminTool() {
             
             // 5. Atualizar a UI
             setJsonGerado(novaStringJson);
+            // --- ADICIONADO (CORRIGE BUG 1 e 2) ---
+            // Recalcula a pré-visualização com os novos dados
+            const novosDadosObjeto = JSON.parse(novaStringJson);
+            const tabelaCalculada = calcularClassificacao(novosDadosObjeto);
+            // const rankingsCalculados = calcularRankingsIndividuais(novosDadosObjeto);
+            
+            setTabelaTeste(tabelaCalculada);
+            // setRankingsTeste(rankingsCalculados);
+            // --- FIM DA ADIÇÃO ---
             alert(`✅ Rodada ${rodadaAgendada} agendada com ${novasPartidasJSON.length} jogos! Role para baixo e copie o JSON.`);
 
             // 6. Resetar o formulário
@@ -314,7 +325,7 @@ export default function AdminTool() {
                 gols_visitante: Number(matchResults.golsVisitante),
                 // Adiciona os eventos formatados
                 eventos: matchEventos.map(e => ({ 
-                    jogadorId: Number(e.jogadorId), 
+                    jogadorId: e.jogadorId, // <-- CORRIGIDO 
                     tipo: e.tipo, 
                     minuto: Number(e.minuto) || null,
                     partida_id: Number(selectedMatchId) 
@@ -327,6 +338,13 @@ export default function AdminTool() {
 
             const tabelaCalculada = calcularClassificacao(novosDados);
             setTabelaTeste(tabelaCalculada);
+
+            // --- ADICIONADO (CORRIGE BUG 2) ---
+            // const rankingsCalculados = calcularRankingsIndividuais(novosDados);
+            
+            setTabelaTeste(tabelaCalculada);
+            // setRankingsTeste(rankingsCalculados);
+            // --- FIM DA ADIÇÃO ---
 
             alert('✅ Resultado salvo! JSON gerado. Role para baixo e copie.');
 
@@ -637,7 +655,7 @@ export default function AdminTool() {
             {/* --- Saída do JSON Gerado --- */}
             {jsonGerado && (
                 <div style={{ marginTop: '40px' }}>
-                    <h2>2. Salvar e Publicar</h2>
+                    <h2>3. Salvar e Publicar</h2>
                     <p style={{ color: '#e0e0e0' }}>
                         O novo conteúdo JSON foi gerado. Clique no botão abaixo para **baixar o arquivo** e, em seguida, **substitua o arquivo <code>src/data/campeonato.json</code>** do seu projeto local.
                     </p>
