@@ -39,17 +39,25 @@ O sistema é dividido em duas áreas: uma **Área Pública (Vitrine)** para todo
 
 2. **Ferramenta de Admin (Gerenciamento Manual)**
 
-    A Ferramenta de Admin é uma seção do React acessível apenas ao administrador, que permite gerenciar os dados do campeonato.
+    O Painel de Gerenciamento (`AdminTool.jsx`) é uma ferramenta central para gerenciar todo o ciclo de vida do campeonato. Ela foi estruturada em um fluxo de trabalho profissional dividido em duas seções principais:
 
-    * **Entrada de Resultados:** Formulário dedicado para registrar novos resultados de partidas, o número da rodada, gols, assistências e cartões.
+    * **Agendador de Rodadas:**
+        
+        * Permite ao administrador cadastrar rodadas inteiras (múltiplos jogos) de uma só vez (modo "bulk insert").
 
-    * **Geração do JSON:** Após inserir um novo resultado, a ferramenta utiliza a lógica JavaScript para:
+        * As partidas são salvas no sistema como "agendadas" (com placar `null`), permitindo que a tabela de rodadas do site mostre jogos futuros ("vs").
+    
+    * **Lançamento de Resultados:**
+        
+        * O admin seleciona uma partida *previamente agendada* (que ainda não tem placar) em um menu.
 
-        1. Ler o JSON atual.
+        * Permite preencher o placar final e adicionar todos os eventos detalhados da partida (gols, assistências, cartões).
 
-        2. Adicionar o novo resultado ao histórico.
+        * O sistema **atualiza** a partida existente em vez de criar uma nova.
 
-        3. **Gerar a nova estrutura de dados completa e atualizada.**
+    * **Geração de JSON:** Qualquer ação no painel (seja agendar ou lançar resultado) gera uma nova versão do arquivo `campeonato.json`.
+
+    * **Pré-visualização Imediata:** Após gerar o JSON, o admin vê uma pré-visualização completa e estilizada da tabela de classificação e dos rankings (artilharia, assistências), permitindo validar 100% dos dados antes de publicá-los.
 
     * **Atualização do Site:** O Administrador deve:
         1. Clicar em **"Fazer Download"** para salvar o novo arquivo `campeonato.json` gerado.
