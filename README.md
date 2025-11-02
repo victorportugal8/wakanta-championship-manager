@@ -29,11 +29,15 @@ O sistema é dividido em duas áreas: uma **Área Pública (Vitrine)** para todo
 
 1. **Área Pública (Visualização)**
 
-    * **Tabela de Classificação:** Tabela completa e ordenada, calculada com base nos resultados do JSON. Exibição de: Posição, Time, Pontos (P), Jogos (J), Vitórias (V), Empates (E), Derrotas (D), Gols Pró (GP), Gols Contra (GC), Saldo de Gols (SG) e Últimos 5. Com critérios de desempate avançados (Ponto, Confronto Direto, Vitórias, etc.).
+    * 📊 **Tabela de Classificação:** Tabela completa e ordenada, calculada com base nos resultados do JSON. Exibição de: Posição, Time, Pontos (P), Jogos (J), Vitórias (V), Empates (E), Derrotas (D), Gols Pró (GP), Gols Contra (GC), Saldo de Gols (SG) e Últimos 5. Com critérios de desempate avançados (Ponto, Confronto Direto, Vitórias, etc.).
 
-    * **Artilharia:** Lista dos principais goleadores do campeonato, mostrando o total de gols e o time de cada jogador.
+    * ⚽ **Artilharia:** Lista dos principais goleadores do campeonato, mostrando o total de gols e o time de cada jogador.
 
-    * **Rei das Assistências:** Lista dos jogadores com o maior número de passes para gol.
+    * 👟 **Rei das Assistências:** Lista dos jogadores com o maior número de passes para gol.
+
+    * 🟨 **Controle Disciplinar (Cartões Amarelos):** Ranking de jogadores com mais cartões amarelos, facilitando o gerenciamento de suspensões.
+
+    * 🟥 **Controle Disciplinar (Cartões Vermelhos):** Lista de jogadores que receberam cartões vermelhos.
 
     * **Navegador de Rodadas:** Permite ao usuário navegar por todas as rodadas do campeonato (passadas e futuras) e visualizar os resultados de cada partida daquela rodada.
 
@@ -51,7 +55,7 @@ O sistema é dividido em duas áreas: uma **Área Pública (Vitrine)** para todo
         
         * O admin seleciona uma partida *previamente agendada* (que ainda não tem placar) em um menu.
 
-        * Permite preencher o placar final e adicionar todos os eventos detalhados da partida (gols, assistências, cartões).
+        * Permite preencher o placar final e adicionar todos os eventos detalhados da partida (gols, assistências, cartões amarelos e vermelhos).
 
         * O sistema **atualiza** a partida existente em vez de criar uma nova.
 
