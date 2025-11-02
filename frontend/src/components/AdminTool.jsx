@@ -50,6 +50,35 @@ export default function AdminTool() {
         emblema_url: 'img/emblemas/default.png' // Valor padrão
     });
 
+    // --- NOVOS ESTADOS (Seção 4: Gerenciar Jogadores) ---
+    const [novoJogador, setNovoJogador] = useState({
+        id: '',    // O ID de string, ex: "PlayerG"
+        nome: '',
+        time_id: '' // O ID numérico do time
+    });
+
+    /**
+     * Agrupa os jogadores atuais por time para exibição.
+     * (Usa os dados 'times' e 'jogadores' lidos do JSON importado)
+     */
+    const jogadoresPorTime = useMemo(() => {
+        // 1. Cria um mapa de times
+        const timesMap = times.reduce((acc, t) => {
+            acc[t.id] = { nome: t.nome, emblema_url: t.emblema_url, jogadores: [] };
+            return acc;
+        }, {});
+
+        // 2. Adiciona jogadores a cada time
+        jogadores.forEach(j => {
+            if (timesMap[j.time_id]) {
+                timesMap[j.time_id].jogadores.push(j);
+            }
+        });
+        // Retorna um array de times que têm jogadores
+        return Object.values(timesMap).filter(t => t.jogadores.length > 0);
+        
+    }, [times, jogadores]);
+
     /**
      * Cria uma lista de partidas agendadas (gols_casa === null)
      * para popular o <select> da Seção 2.
@@ -438,6 +467,78 @@ export default function AdminTool() {
         }
     };
 
+    // --- Handlers da Seção 4: Gerenciar Jogadores ---
+
+    /**
+     * Atualiza o estado do formulário de novo jogador.
+     */
+    const handleNovoJogadorChange = (e) => {
+        const { name, value } = e.target;
+        setNovoJogador(prev => ({ ...prev, [name]: value }));
+    };
+
+    /**
+     * Adiciona o novo jogador ao JSON.
+     */
+    const handleAdicionarJogador = (e) => {
+        e.preventDefault();
+
+        // 1. Validação
+        if (!novoJogador.id.trim()) {
+            alert('Por favor, preencha o ID do Jogador (ex: "PlayerG").');
+            return;
+        }
+        if (!novoJogador.nome.trim()) {
+            alert('Por favor, preencha o Nome do Jogador.');
+            return;
+        }
+        if (!novoJogador.time_id) {
+            alert('Por favor, selecione um time para o jogador.');
+            return;
+        }
+
+        try {
+            // 2. Clonar `dadosAntigos`
+            const novosDados = JSON.parse(JSON.stringify(dadosAntigos));
+
+            // 3. Checar duplicidade de ID
+            if (novosDados.jogadores.find(j => j.id === novoJogador.id.trim())) {
+                alert('Erro: Um jogador com este ID já existe.');
+                return;
+            }
+
+            // 4. Criar o novo objeto de jogador
+            const novoJogadorObjeto = {
+                id: novoJogador.id.trim(),
+                nome: novoJogador.nome.trim(),
+                time_id: Number(novoJogador.time_id) // Garante que o ID do time é número
+            };
+
+            // 5. Adicionar ao array de jogadores
+            novosDados.jogadores.push(novoJogadorObjeto);
+
+            // 6. Regenerar JSON e Pré-visualização
+            const novaStringJson = JSON.stringify(novosDados, null, 2);
+            setJsonGerado(novaStringJson);
+
+            // Recalcula as previews
+            const tabelaCalculada = calcularClassificacao(novosDados);
+            // Certifique-se de que a importação de calcularRankingsIndividuais existe
+            const rankingsCalculados = calcularRankingsIndividuais(novosDados);
+            
+            setTabelaTeste(tabelaCalculada);
+            setRankingsTeste(rankingsCalculados); // (assumindo que está descomentado)
+
+            // 7. Alertar e Resetar o formulário
+            alert(`✅ Jogador "${novoJogadorObjeto.nome}" (ID: ${novoJogadorObjeto.id}) foi adicionado!`);
+            setNovoJogador({ id: '', nome: '', time_id: '' });
+            
+        } catch (error) {
+            console.error("Erro ao adicionar jogador:", error);
+            alert("❌ Erro ao adicionar jogador. Verifique o console.");
+        }
+    };
+
     /**
      * Recebe o conteúdo JSON como string e força o download como arquivo.
      * @param {string} jsonString - A string JSON completa gerada.
@@ -780,6 +881,89 @@ export default function AdminTool() {
                     </div>
                     <button type="submit" className="btn-primary" style={{ marginTop: '20px' }}>
                         + Adicionar Time
+                    </button>
+                </div>
+            </form>
+
+            {/* --- SEÇÃO 4: GERENCIAR JOGADORES --- */}
+            <h2 style={{ borderBottom: '2px solid #333', paddingBottom: '10px', marginTop: '30px', color: '#00bcd4' }}>
+                4. Gerenciar Jogadores
+            </h2>
+            <p>Adicione novos jogadores e associe-os a um time existente.</p>
+
+            {/* Lista de jogadores existentes (usando o 'jogadoresPorTime' que criamos) */}
+            <div className="admin-form-group">
+                <h3 style={{ marginTop: 0, color: '#e0e0e0' }}>Jogadores Atuais ({jogadores.length})</h3>
+                <div style={{ maxHeight: '200px', overflowY: 'auto', padding: '10px', backgroundColor: '#121212', borderRadius: '4px' }}>
+                    {jogadoresPorTime.map(time => (
+                        <div key={time.nome} style={{ marginBottom: '10px' }}>
+                            <strong style={{ color: '#00bcd4' }}>
+                                <img src={time.emblema_url} alt="" style={{ width: '16px', height: '16px', marginRight: '8px', verticalAlign: 'middle' }} />
+                                {time.nome}
+                            </strong>
+                            <ul style={{ listStyleType: 'none', paddingLeft: '25px', margin: '5px 0 0 0', fontSize: '0.9em' }}>
+                                {time.jogadores.map(j => (
+                                    <li key={j.id} style={{ color: '#ccc' }}>{j.nome} (ID: <code>{j.id}</code>)</li>
+                                ))}
+                            </ul>
+                        </div>
+                    ))}
+                </div>
+            </div>
+
+            {/* Formulário de Adição */}
+            <form onSubmit={handleAdicionarJogador}>
+                <div className="admin-form-group">
+                    <h3 style={{ marginTop: 0, color: '#e0e0e0' }}>Adicionar Novo Jogador</h3>
+                    
+                    <div style={{ marginBottom: '15px' }}>
+                        <label style={{ fontWeight: 'bold', color: '#e0e0e0', display: 'block', marginBottom: '5px' }}>ID do Jogador (String):</label>
+                        <input 
+                            className="admin-input" 
+                            type="text" 
+                            name="id" 
+                            value={novoJogador.id} 
+                            onChange={handleNovoJogadorChange} 
+                            placeholder="Ex: PlayerG (usado nos eventos)" 
+                            style={{ width: '100%' }}
+                        />
+                        <small style={{ color: '#999', display: 'block', marginTop: '5px' }}>
+                            <strong>Importante:</strong> Use o ID de string (ex: "KylianM") que você usará nos eventos.
+                        </small>
+                    </div>
+
+                    <div style={{ marginBottom: '15px' }}>
+                        <label style={{ fontWeight: 'bold', color: '#e0e0e0', display: 'block', marginBottom: '5px' }}>Nome do Jogador:</label>
+                        <input 
+                            className="admin-input" 
+                            type="text" 
+                            name="nome" 
+                            value={novoJogador.nome} 
+                            onChange={handleNovoJogadorChange} 
+                            placeholder="Ex: Kylian Mbappé" 
+                            style={{ width: '100%' }}
+                        />
+                    </div>
+                    
+                    <div style={{ marginBottom: '15px' }}>
+                        <label style={{ fontWeight: 'bold', color: '#e0e0e0', display: 'block', marginBottom: '5px' }}>Time:</label>
+                        <select 
+                            className="admin-select" 
+                            name="time_id" 
+                            value={novoJogador.time_id} 
+                            onChange={handleNovoJogadorChange} 
+                            style={{ width: '100%' }}
+                        >
+                            <option value="" disabled>-- Selecione um time --</option>
+                            {/* O 'times' aqui é o lido do JSON importado */}
+                            {times.map(t => (
+                                <option key={t.id} value={t.id}>{t.nome}</option>
+                            ))}
+                        </select>
+                    </div>
+                    
+                    <button type="submit" className="btn-primary" style={{ marginTop: '10px' }}>
+                        + Adicionar Jogador
                     </button>
                 </div>
             </form>
