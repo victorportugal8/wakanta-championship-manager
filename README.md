@@ -21,9 +21,9 @@ Este projeto utiliza uma abordagem **"JAMstack"** moderna, combinando um fronten
 | Categoria | Tecnologia | Uso no Projeto |
 | :--- | :--- | :--- |
 | **Frontend/UI** | **React** (via Vite) | Construção da interface do usuário (tabelas, listas, formulários). |
-| **Lógica de Dados** | **JavaScript Puro** | Funções no Frontend para fazer todos os cálculos de estatísticas (pontos, saldo, artilharia). |
-| **Armazenamento** | **JSON** (Arquivo Estático) | O "banco de dados" do projeto. Armazena times, jogadores e todos os resultados de partidas. |
-| **Hospedagem** | **Vercel / Netlify** | Hospedagem de custo zero para o Frontend estático. |
+| **Backend** | **Vercel Serverless** | Uma API Node.js (`api/json-handler.js`) que processa requisições `GET` (leitura) e `POST` (escrita). |
+| **Armazenamento** | **Vercel Blob** | O "banco de dados" do projeto. Armazena um único arquivo `campeonato.json` na nuvem. |
+| **Hospedagem** | **Vercel** | Hospedagem de custo zero para o aplicativo full-stack (Frontend + API). |
 
 ## ✨ Funcionalidades do Projeto
 
