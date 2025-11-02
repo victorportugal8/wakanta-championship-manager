@@ -2,19 +2,21 @@
 
 ## 🌟 Visão Geral
 
-Este projeto é uma aplicação web simples e de código aberto, desenvolvida para gerenciar e acompanhar a classificação e as estatísticas de um campeonato local de EAFC 26 (ou qualquer outro jogo de futebol). A prioridade desta arquitetura é a **simplicidade máxima** e o **custo zero** de hospedagem, utilizando um arquivo JSON como banco de dados estático.
+Este projeto é uma aplicação web full-stack, desenvolvida para gerenciar e acompanhar a classificação e as estatísticas de um campeonato local de EAFC 26. A arquitetura do projeto foi migrada de um fluxo estático manual para um sistema **"Live Update" dinâmico**, que não requer um banco de dados tradicional.
+
+Utilizando uma **API Serverless** e o **Vercel Blob**, o administrador pode atualizar todos os aspectos do campeonato (times, jogadores, rodadas e resultados) em tempo real, sem a necessidade de novos deploys.
 
 ## 🎯 Objetivo do Projeto
 
 O objetivo principal é oferecer uma plataforma centralizada e de fácil acesso para todos os participantes do campeonato, permitindo que eles:
 
-* Visualizem a **Tabela de Classificação** em tempo real (após o *deploy* do Admin).
-* Acompanhem as **Estatísticas Individuais** (Artilharia e Assistências).
+* Visualizem a **Tabela de Classificação** em tempo real.
+* Acompanhem as **Estatísticas Individuais** (Artilharia, Assistências e Cartões).
 * Tenham acesso ao **Histórico de Partidas** e resultados.
 
 ## 💻 Stacks Utilizadas
 
-Este projeto segue a **Abordagem Simplificada (React + JSON)**, eliminando a necessidade de um servidor de backend ou banco de dados gerenciado.
+Este projeto utiliza uma abordagem **"JAMstack"** moderna, combinando um frontend **React** com uma **API Serverless** e um armazenamento em *nuvem*.
 
 | Categoria | Tecnologia | Uso no Projeto |
 | :--- | :--- | :--- |
@@ -29,7 +31,9 @@ O sistema é dividido em duas áreas: uma **Área Pública (Vitrine)** para todo
 
 1. **Área Pública (Visualização)**
 
-    * 📊 **Tabela de Classificação:** Tabela completa e ordenada, calculada com base nos resultados do JSON. Exibição de: Posição, Time, Pontos (P), Jogos (J), Vitórias (V), Empates (E), Derrotas (D), Gols Pró (GP), Gols Contra (GC), Saldo de Gols (SG) e Últimos 5. Com critérios de desempate avançados (Ponto, Confronto Direto, Vitórias, etc.).
+    * **Carregamento Dinâmico:** A página busca (`fetch`) os dados mais recentes da API assim que é carregada, garantindo que os dados sejam sempre "ao vivo".
+
+    * 📊 **Tabela de Classificação:** Tabela completa e ordenada. Exibição de: Posição, Time, Pontos (P), Jogos (J), Vitórias (V), Empates (E), Derrotas (D), Gols Pró (GP), Gols Contra (GC), Saldo de Gols (SG) e Últimos 5. Com critérios de desempate avançados (Ponto, Confronto Direto, Vitórias, etc.).
 
     * ⚽ **Artilharia:** Lista dos principais goleadores do campeonato, mostrando o total de gols e o time de cada jogador.
 
@@ -39,34 +43,21 @@ O sistema é dividido em duas áreas: uma **Área Pública (Vitrine)** para todo
 
     * 🟥 **Controle Disciplinar (Cartões Vermelhos):** Lista de jogadores que receberam cartões vermelhos.
 
-    * **Navegador de Rodadas:** Permite ao usuário navegar por todas as rodadas do campeonato (passadas e futuras) e visualizar os resultados de cada partida daquela rodada.
+    * **Navegador de Rodadas:** Permite ao usuário navegar por todas as rodadas do campeonato (passadas e futuras) e visualizar os resultados (`3-1`) ou confrontos agendados (`vs`).
 
-2. **Ferramenta de Admin (Gerenciamento Manual)**
+2. **Ferramenta de Admin (Gerenciamento "Live Update")**
 
-    O Painel de Gerenciamento (`AdminTool.jsx`) é uma ferramenta central para gerenciar todo o ciclo de vida do campeonato. Ela foi estruturada em um fluxo de trabalho profissional dividido em duas seções principais:
+    O Painel de Gerenciamento (`AdminTool.jsx`) é um **CMS** completo que permite ao administrador controlar 100% do campeonato sem editar arquivos ou fazer novos `deploys`.
 
-    * **Agendador de Rodadas:**
-        
-        * Permite ao administrador cadastrar rodadas inteiras (múltiplos jogos) de uma só vez (modo "bulk insert").
+    * **Salvamento Instantâneo:** Qualquer ação no painel (adicionar time, salvar resultado) chama a **API** (`POST /api/json-handler`), que **sobrescreve** o `campeonato.json` no **Vercel Blob**. O site público refletirá as mudanças no próximo recarregamento de página.
 
-        * As partidas são salvas no sistema como "agendadas" (com placar `null`), permitindo que a tabela de rodadas do site mostre jogos futuros ("vs").
+    * **Gerenciador de Times:** Permite ao admin **cadastrar novos times** (nome, emblema) diretamente pela interface.
+
+    * **Gerenciador de Jogadores:** Permite ao admin **cadastrar novos jogadores** (ID, nome) e associá-los a um time existente.
+
+    * **Agendador de Rodadas:** Ferramenta para cadastrar rodadas inteiras (múltiplos jogos) de uma só vez. As partidas são salvas como "agendadas" (placar `null`).
     
-    * **Lançamento de Resultados:**
-        
-        * O admin seleciona uma partida *previamente agendada* (que ainda não tem placar) em um menu.
-
-        * Permite preencher o placar final e adicionar todos os eventos detalhados da partida (gols, assistências, cartões amarelos e vermelhos).
-
-        * O sistema **atualiza** a partida existente em vez de criar uma nova.
-
-    * **Geração de JSON:** Qualquer ação no painel (seja agendar ou lançar resultado) gera uma nova versão do arquivo `campeonato.json`.
-
-    * **Pré-visualização Imediata:** Após gerar o JSON, o admin vê uma pré-visualização completa e estilizada da tabela de classificação e dos rankings (artilharia, assistências), permitindo validar 100% dos dados antes de publicá-los.
-
-    * **Atualização do Site:** O Administrador deve:
-        1. Clicar em **"Fazer Download"** para salvar o novo arquivo `campeonato.json` gerado.
-        2. **Substituir manualmente** o arquivo `src/data/campeonato.json` no projeto local.
-        3. Realizar o *commit* e *deploy* para atualizar o site para o público.
+    * **Lançamento de Resultados:** O admin seleciona uma *partida previamente agendada* em um menu e preenche o placar final e todos os eventos (gols, assistências, cartões).
 
 ## 🚀 Primeiros Passos (Para Desenvolvedores)
 
@@ -74,8 +65,22 @@ O sistema é dividido em duas áreas: uma **Área Pública (Vitrine)** para todo
 
 2. Instale as dependências: `npm install`
 
-3. Inicie o ambiente de desenvolvimento: `npm run dev`
+3. **Instale a CLI do Vercel** (necessária para rodar a API localmente): `npm install -g vercel`
 
-4. Acesse e edite o arquivo `src/data/campeonato.json` com os dados iniciais dos times.
+4. **Configuração do Vercel:**
 
-5. Para atualizar o site, utilize a Ferramenta de Admin localmente, **baixe o novo JSON**, e faça o *deploy* para o seu serviço de hospedagem (Vercel/Netlify).
+    1. Faça o *deploy* inicial do projeto no Vercel.
+
+    2. No painel da Vercel, vá em "Storage" -> "Blob" e crie um novo "Blob Store" (isso irá linkar o token `BLOB_READ_WRITE_TOKEN`).
+
+    3. **Faça o upload manual** do seu `campeonato.json` inicial (pode ser um arquivo com arrays vazios) para o Blob Store.
+
+5. **Inicie o ambiente de desenvolvimento:**
+
+    1. **NÃO** use `npm run dev`.
+
+    2. Execute: `vercel dev`
+
+    3. O `vercel dev` irá rodar o **frontend (Vite)** e o **backend (API)** simultaneamente, conectando-se ao seu Vercel Blob na *nuvem*.
+
+6. Acesse o `localhost` (para ver o `Tabela.jsx`) e o `localhost/admin` (para usar o `AdminTool.jsx`). As alterações feitas no Admin serão salvas "ao vivo" no Blob e refletirão na tabela principal.
