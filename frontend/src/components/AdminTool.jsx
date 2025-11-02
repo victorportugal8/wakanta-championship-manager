@@ -382,7 +382,7 @@ export default function AdminTool() {
 
     return (
         <div className="container" style={{ maxWidth: '900px' }}>
-            <h1>⚽ Ferramenta de Administração (EAFC 26)</h1>
+            <h1>🛠️ Ferramenta de Administração (EAFC 26)</h1>
             <p><strong>Atenção:</strong> Alterações feitas aqui são salvas "ao vivo" e afetam o site público imediatamente.</p>
             {renderError()}
 
