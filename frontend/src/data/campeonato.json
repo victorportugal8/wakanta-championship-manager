@@ -47,6 +47,12 @@
       "nome": "Milan",
       "dono": "",
       "emblema_url": "img/emblemas/milan.png"
+    },
+    {
+      "id": 9,
+      "nome": "Inter de Milão",
+      "emblema_url": "img/emblemas/inter-de-milao.png",
+      "dono": ""
     }
   ],
   "partidas": [
@@ -160,10 +166,65 @@
       "rodada": 2,
       "time_casa_id": 3,
       "time_visitante_id": 6,
-      "gols_casa": null,
-      "gols_visitante": null,
+      "gols_casa": 7,
+      "gols_visitante": 0,
       "data_partida": null,
-      "eventos": []
+      "eventos": [
+        {
+          "jogadorId": "PlayerC",
+          "tipo": "gol",
+          "minuto": 2,
+          "partida_id": 7
+        },
+        {
+          "jogadorId": "HarryK",
+          "tipo": "gol",
+          "minuto": 7,
+          "partida_id": 7
+        },
+        {
+          "jogadorId": "HarryK",
+          "tipo": "gol",
+          "minuto": 11,
+          "partida_id": 7
+        },
+        {
+          "jogadorId": "HarryK",
+          "tipo": "gol",
+          "minuto": 13,
+          "partida_id": 7
+        },
+        {
+          "jogadorId": "HarryK",
+          "tipo": "gol",
+          "minuto": 21,
+          "partida_id": 7
+        },
+        {
+          "jogadorId": "HarryK",
+          "tipo": "gol",
+          "minuto": 21,
+          "partida_id": 7
+        },
+        {
+          "jogadorId": "HarryK",
+          "tipo": "gol",
+          "minuto": 26,
+          "partida_id": 7
+        },
+        {
+          "jogadorId": "PlayerC",
+          "tipo": "assistencia",
+          "minuto": 2,
+          "partida_id": 7
+        },
+        {
+          "jogadorId": "PlayerC",
+          "tipo": "gol",
+          "minuto": 11,
+          "partida_id": 7
+        }
+      ]
     },
     {
       "id": 8,
@@ -260,6 +321,16 @@
       "id": "PlayerE",
       "nome": "Jogador E",
       "time_id": 5
+    },
+    {
+      "id": "LamineY",
+      "nome": "Lamine Yamal",
+      "time_id": 2
+    },
+    {
+      "id": "HarryK",
+      "nome": "Harry Kane",
+      "time_id": 3
     }
   ]
 }

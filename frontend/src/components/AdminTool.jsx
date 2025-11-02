@@ -971,7 +971,7 @@ export default function AdminTool() {
             {/* --- Saída do JSON Gerado --- */}
             {jsonGerado && (
                 <div style={{ marginTop: '40px' }}>
-                    <h2>3. Salvar e Publicar</h2>
+                    <h2>5. Salvar e Publicar</h2>
                     <p style={{ color: '#e0e0e0' }}>
                         O novo conteúdo JSON foi gerado. Clique no botão abaixo para **baixar o arquivo** e, em seguida, **substitua o arquivo <code>src/data/campeonato.json</code>** do seu projeto local.
                     </p>

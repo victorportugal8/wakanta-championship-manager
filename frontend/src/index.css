@@ -80,6 +80,7 @@ h1, h2, h3 {
 }
 
 .admin-input, .admin-select {
+    box-sizing: border-box; /* Inclui padding/border na largura total */
     padding: 10px;
     margin-right: 10px;
     border: 1px solid #444;
