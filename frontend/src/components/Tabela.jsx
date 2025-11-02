@@ -307,6 +307,67 @@ export default function Tabela() {
                     </table>
                 </div>
             </div>
+
+            {/* --- NOVO BLOCO: RANKING DE CARTÕES --- */}
+            <div style={{ display: 'flex', justifyContent: 'space-between', gap: '30px', marginTop: '40px' }}>
+                
+                {/* --- Seção de Cartões Amarelos --- */}
+                <div style={{ flex: 1 }}>
+                    <h2>🟨 Cartões Amarelos</h2>
+                    <table className="score-table">
+                        {renderHeader(['Pos', 'Jogador', 'Time', 'CA'])}
+                        <tbody>
+                            {/* O 'rankings' agora vem com .cartoesAmarelos */}
+                            {rankings.cartoesAmarelos.slice(0, 10).map((jogador, index) => (
+                                <tr key={jogador.jogadorId}>
+                                    <td>{index + 1}</td>
+                                    <td>{jogador.nome}</td>
+                                    <td className="col-ranking-emblem">
+                                        <img 
+                                            src={jogador.timeEmblema} 
+                                            alt={jogador.timeNome}
+                                            title={jogador.timeNome}
+                                            className="ranking-emblem"
+                                        />
+                                    </td>
+                                    {/* Nova classe de CSS */}
+                                    <td className="col-yellow-cards">
+                                        {jogador.cartoesAmarelos}
+                                    </td>
+                                </tr>
+                            ))}
+                        </tbody>
+                    </table>
+                </div>
+
+                {/* --- Seção de Cartões Vermelhos --- */}
+                <div style={{ flex: 1 }}>
+                    <h2>🟥 Cartões Vermelhos</h2>
+                    <table className="score-table">
+                        {renderHeader(['Pos', 'Jogador', 'Time', 'CV'])}
+                        <tbody>
+                            {rankings.cartoesVermelhos.slice(0, 10).map((jogador, index) => (
+                                <tr key={jogador.jogadorId}>
+                                    <td>{index + 1}</td>
+                                    <td>{jogador.nome}</td>
+                                    <td className="col-ranking-emblem">
+                                        <img 
+                                            src={jogador.timeEmblema} 
+                                            alt={jogador.timeNome}
+                                            title={jogador.timeNome}
+                                            className="ranking-emblem"
+                                        />
+                                    </td>
+                                    {/* Nova classe de CSS (usa a cor neon que já tínhamos) */}
+                                    <td className="col-red-cards">
+                                        {jogador.cartoesVermelhos}
+                                    </td>
+                                </tr>
+                            ))}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
         </div>
     );
 }

@@ -329,13 +329,17 @@ export function calcularRankingsIndividuais(dados) {
             // --- CORRIGIDO: Força o acesso via String ---
             const jogadorIdStr = String(evento.jogadorId);
             if (!contagem[jogadorIdStr]) {
-                contagem[jogadorIdStr] = { gols: 0, assistencias: 0 };
+                contagem[jogadorIdStr] = { gols: 0, assistencias: 0, cartoesAmarelos: 0, cartoesVermelhos: 0 };
             }
 
             if (evento.tipo === 'gol') {
                 contagem[jogadorIdStr].gols += 1;
             } else if (evento.tipo === 'assistencia') {
                 contagem[jogadorIdStr].assistencias += 1;
+            } else if (evento.tipo === 'cartao_amarelo') {
+                contagem[jogadorIdStr].cartoesAmarelos += 1;
+            } else if (evento.tipo === 'cartao_vermelho') {
+                contagem[jogadorIdStr].cartoesVermelhos += 1;
             }
         });
     });
@@ -344,7 +348,9 @@ export function calcularRankingsIndividuais(dados) {
         jogadorId,
         ...jogadoresMap[jogadorId],
         gols: contagem[jogadorId].gols,
-        assistencias: contagem[jogadorId].assistencias
+        assistencias: contagem[jogadorId].assistencias,
+        cartoesAmarelos: contagem[jogadorId].cartoesAmarelos,
+        cartoesVermelhos: contagem[jogadorId].cartoesVermelhos
     }));
 
     // Filtra e ordena a artilharia (APENAS jogadores com gols > 0)
@@ -356,6 +362,16 @@ export function calcularRankingsIndividuais(dados) {
     const assistencias = [...rankings]
         .filter(j => j.assistencias > 0)
         .sort((a, b) => b.assistencias - a.assistencias);
+    
+    // Filtra e ordena os cartões amarelos (APENAS jogadores com CA > 0)
+    const cartoesAmarelos = [...rankings]
+        .filter(j => j.cartoesAmarelos > 0)
+        .sort((a, b) => b.cartoesAmarelos - a.cartoesAmarelos);
 
-    return { artilharia, assistencias };
+    // Filtra e ordena os cartões vermelhos (APENAS jogadores com CV > 0)
+    const cartoesVermelhos = [...rankings]
+        .filter(j => j.cartoesVermelhos > 0)
+        .sort((a, b) => b.cartoesVermelhos - a.cartoesVermelhos);
+
+    return { artilharia, assistencias, cartoesAmarelos, cartoesVermelhos };
 }

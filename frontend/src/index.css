@@ -405,3 +405,21 @@ h1, h2, h3 {
     color: #666; /* Texto apagado */
     cursor: not-allowed;
 }
+
+/* ================================================= */
+/* Estilos das Colunas de Cartões (Rankings) */
+/* ================================================= */
+
+/* Cor para a coluna de Cartões Amarelos */
+.col-yellow-cards {
+    color: #fdd835; /* Um amarelo vibrante */
+    font-weight: 700;
+    text-align: center;
+}
+
+/* Cor para a coluna de Cartões Vermelhos */
+.col-red-cards {
+    color: #ff5252; /* Reutiliza o vermelho neon do .negative-sg */
+    font-weight: 700;
+    text-align: center;
+}
