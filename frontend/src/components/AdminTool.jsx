@@ -44,6 +44,12 @@ export default function AdminTool() {
     const [matchResults, setMatchResults] = useState({ golsCasa: '0', golsVisitante: '0' });
     const [matchEventos, setMatchEventos] = useState([]); // Eventos da partida selecionada
 
+    // --- NOVOS ESTADOS (Seção 3: Gerenciar Times) ---
+    const [novoTime, setNovoTime] = useState({
+        nome: '',
+        emblema_url: 'img/emblemas/default.png' // Valor padrão
+    });
+
     /**
      * Cria uma lista de partidas agendadas (gols_casa === null)
      * para popular o <select> da Seção 2.
@@ -360,6 +366,78 @@ export default function AdminTool() {
         }
     };
 
+    // --- Handlers da Seção 3: Gerenciar Times ---
+
+    /**
+     * Atualiza o estado do formulário de novo time.
+     */
+    const handleNovoTimeChange = (e) => {
+        const { name, value } = e.target;
+        setNovoTime(prev => ({ ...prev, [name]: value }));
+    };
+
+    /**
+     * Adiciona o novo time ao JSON.
+     */
+    const handleAdicionarTime = (e) => {
+        e.preventDefault();
+
+        // 1. Validação
+        if (!novoTime.nome.trim()) {
+            alert('Por favor, preencha o nome do time.');
+            return;
+        }
+        if (!novoTime.emblema_url.trim()) {
+            alert('Por favor, preencha a URL do emblema.');
+            return;
+        }
+
+        try {
+            // 2. Clonar `dadosAntigos` (o arquivo importado no carregamento)
+            const novosDados = JSON.parse(JSON.stringify(dadosAntigos));
+
+            // 3. Checar duplicidade de nome
+            if (novosDados.times.find(t => t.nome.toLowerCase() === novoTime.nome.trim().toLowerCase())) {
+                alert('Erro: Um time com este nome já existe.');
+                return;
+            }
+
+            // 4. Encontrar o ID mais alto
+            const ultimoId = novosDados.times.length > 0
+                ? Math.max(...novosDados.times.map(t => t.id))
+                : 0;
+            
+            // 5. Criar o novo objeto de time
+            const novoTimeObjeto = {
+                id: ultimoId + 1,
+                nome: novoTime.nome.trim(),
+                emblema_url: novoTime.emblema_url.trim(),
+                dono: "" // Mantém o padrão do seu JSON
+            };
+
+            // 6. Adicionar ao array de times
+            novosDados.times.push(novoTimeObjeto);
+
+            // 7. Regenerar JSON e Pré-visualização
+            const novaStringJson = JSON.stringify(novosDados, null, 2);
+            setJsonGerado(novaStringJson);
+
+            // Recalcula as previews
+            const tabelaCalculada = calcularClassificacao(novosDados);
+            const rankingsCalculados = calcularRankingsIndividuais(novosDados);
+            setTabelaTeste(tabelaCalculada);
+            setRankingsTeste(rankingsCalculados);
+
+            // 8. Alertar e Resetar o formulário
+            alert(`✅ Time "${novoTimeObjeto.nome}" (ID: ${novoTimeObjeto.id}) foi adicionado com sucesso!`);
+            setNovoTime({ nome: '', emblema_url: 'img/emblemas/default.png' });
+            
+        } catch (error) {
+            console.error("Erro ao adicionar time:", error);
+            alert("❌ Erro ao adicionar time. Verifique o console.");
+        }
+    };
+
     /**
      * Recebe o conteúdo JSON como string e força o download como arquivo.
      * @param {string} jsonString - A string JSON completa gerada.
@@ -650,6 +728,60 @@ export default function AdminTool() {
                         </button>
                     </>
                 )}
+            </form>
+
+            {/* --- SEÇÃO 3: GERENCIAR TIMES --- */}
+            <h2 style={{ borderBottom: '2px solid #333', paddingBottom: '10px', marginTop: '30px', color: '#00bcd4' }}>
+                3. Gerenciar Times
+            </h2>
+            <p>Adicione novos times ao campeonato. (Para removê-los, você ainda precisa editar o JSON manualmente).</p>
+
+            {/* Lista de times existentes para referência */}
+            <div className="admin-form-group">
+                <h3 style={{ marginTop: 0, color: '#e0e0e0' }}>Times Atuais no Sistema ({times.length})</h3>
+                <ul style={{ maxHeight: '150px', overflowY: 'auto', paddingLeft: '20px', margin: 0, fontSize: '0.9em' }}>
+                    {times.map(t => <li key={t.id} style={{ marginBottom: '5px' }}>
+                        <img src={t.emblema_url} alt="" style={{ width: '16px', height: '16px', marginRight: '8px', verticalAlign: 'middle' }} />
+                        {t.nome} (ID: {t.id})
+                    </li>)}
+                </ul>
+            </div>
+
+            {/* Formulário de Adição */}
+            <form onSubmit={handleAdicionarTime}>
+                <div className="admin-form-group">
+                    <h3 style={{ marginTop: 0, color: '#e0e0e0' }}>Adicionar Novo Time</h3>
+                    <div style={{ marginBottom: '15px' }}>
+                        <label style={{ fontWeight: 'bold', color: '#e0e0e0', display: 'block', marginBottom: '5px' }}>Nome do Time:</label>
+                        <input 
+                            className="admin-input" 
+                            type="text" 
+                            name="nome" 
+                            value={novoTime.nome} 
+                            onChange={handleNovoTimeChange} 
+                            placeholder="Ex: Inter de Milão" 
+                            style={{ width: '100%' }}
+                        />
+                    </div>
+                    <div>
+                        <label style={{ fontWeight: 'bold', color: '#e0e0e0', display: 'block', marginBottom: '5px' }}>URL do Emblema:</label>
+                        <input 
+                            className="admin-input" 
+                            type="text" 
+                            name="emblema_url" 
+                            value={novoTime.emblema_url} 
+                            onChange={handleNovoTimeChange} 
+                            placeholder="Ex: img/emblemas/inter.png" 
+                            style={{ width: '100%' }}
+                        />
+                        <small style={{ color: '#999', display: 'block', marginTop: '5px' }}>
+                            <strong>Aviso:</strong> Você deve fazer o upload do arquivo (`.png` ou `.svg`) para a pasta <code>public/img/emblemas/</code> manualmente.
+                        </small>
+                    </div>
+                    <button type="submit" className="btn-primary" style={{ marginTop: '20px' }}>
+                        + Adicionar Time
+                    </button>
+                </div>
             </form>
 
             {/* --- Saída do JSON Gerado --- */}
