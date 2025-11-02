@@ -347,8 +347,15 @@ export function calcularRankingsIndividuais(dados) {
         assistencias: contagem[jogadorId].assistencias
     }));
 
-    const artilharia = [...rankings].sort((a, b) => b.gols - a.gols);
-    const assistencias = [...rankings].sort((a, b) => b.assistencias - a.assistencias);
+    // Filtra e ordena a artilharia (APENAS jogadores com gols > 0)
+    const artilharia = [...rankings]
+        .filter(j => j.gols > 0)
+        .sort((a, b) => b.gols - a.gols);
+
+    // Filtra e ordena as assistências (APENAS jogadores com assistências > 0)
+    const assistencias = [...rankings]
+        .filter(j => j.assistencias > 0)
+        .sort((a, b) => b.assistencias - a.assistencias);
 
     return { artilharia, assistencias };
 }

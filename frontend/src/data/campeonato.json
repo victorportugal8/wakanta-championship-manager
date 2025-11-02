@@ -131,10 +131,29 @@
       "rodada": 2,
       "time_casa_id": 2,
       "time_visitante_id": 7,
-      "gols_casa": null,
-      "gols_visitante": null,
+      "gols_casa": 2,
+      "gols_visitante": 0,
       "data_partida": null,
-      "eventos": []
+      "eventos": [
+        {
+          "jogadorId": "PlayerB",
+          "tipo": "gol",
+          "minuto": 5,
+          "partida_id": 6
+        },
+        {
+          "jogadorId": "PlayerB",
+          "tipo": "assistencia",
+          "minuto": 5,
+          "partida_id": 6
+        },
+        {
+          "jogadorId": "PlayerB",
+          "tipo": "gol",
+          "minuto": 16,
+          "partida_id": 6
+        }
+      ]
     },
     {
       "id": 7,
