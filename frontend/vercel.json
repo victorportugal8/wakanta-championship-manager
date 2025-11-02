@@ -5,7 +5,7 @@
       "dest": "/api/json-handler.js"
     },
     {
-      "src": "/.*\.(?:ico|svg|png|jpg|jpeg|js|css)$",
+      "src": "/.*\\.(?:ico|svg|png|jpg|jpeg|js|css)$",
       "handle": "filesystem"
     },
     {
