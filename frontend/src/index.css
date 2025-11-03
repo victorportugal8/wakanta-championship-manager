@@ -424,3 +424,60 @@ h1, h2, h3 {
     font-weight: 700;
     text-align: center;
 }
+
+/* ================================================= */
+/* --- Layout Responsivo (Mobile) --- */
+/* ================================================= */
+
+/* Define o "ponto de quebra". Usamos 768px (padrão de tablets) */
+@media (max-width: 768px) {
+
+    /* 1. Ajusta o container principal em telas pequenas */
+    .container {
+        padding: 20px 15px; /* Reduz o padding lateral */
+    }
+
+    h1 { font-size: 1.8em; }
+    h2 { font-size: 1.4em; }
+
+    /* 2. Ativa a rolagem horizontal para tabelas */
+    .table-responsive-wrapper {
+        width: 100%;
+        overflow-x: auto; /* A MÁGICA ACONTECE AQUI */
+        -webkit-overflow-scrolling: touch; /* Rolagem suave em iOS */
+        border: 1px solid #333; /* Adiciona uma borda para indicar que é 'rolável' */
+        border-radius: 8px;
+    }
+    
+    /* Força a tabela a manter sua largura, ativando a rolagem */
+    .score-table {
+        min-width: 800px; /* Garante que a tabela transborde e ative o scroll */
+    }
+    
+    /* 3. Faz os rankings ficarem em 1 coluna (empilhados) */
+    .rankings-grid {
+        flex-direction: column; /* De "lado a lado" para "empilhados" */
+        gap: 40px; /* Aumenta o espaço vertical */
+    }
+
+    /* 4. Faz os formulários do Admin ficarem em 1 coluna */
+    .form-row-flex {
+        flex-direction: column;
+        align-items: stretch; /* Faz inputs e botões ocuparem 100% */
+        gap: 15px;
+    }
+    
+    .form-row-flex .admin-input,
+    .form-row-flex .admin-select,
+    .form-row-flex .btn-primary,
+    .form-row-flex .btn-remove {
+        width: 100%; /* Garante que todos os itens preencham a largura */
+        margin-right: 0;
+    }
+
+    /* * 5. (BÔNUS) Os seus Cards de Rodada!
+     * O seu CSS para .recent-matches-container 
+     * JÁ É RESPONSIVO! Ele usa 1 coluna por padrão e muda
+     * para 2 colunas em telas > 768px. Não precisamos mexer aqui.
+     */
+}

@@ -138,43 +138,45 @@ export default function Tabela() {
             {/* --- Seção de Tabela de Classificação --- */}
             <div style={{ marginBottom: '40px' }}>
                 <h2>Tabela de Classificação</h2>
-                <table className="score-table">
-                    {renderHeader(['Pos', 'Time', 'P', 'J', 'V', 'E', 'D', 'GP', 'GC', 'SG', 'Últimos 5'])}
-                    <tbody>
-                        {tabelaClassificacao.map((time, index) => (
-                            <tr key={time.id}>
-                                <td className="col-pos">{getPositionElement(index)}</td>
-                                <td className="col-time">
-                                    <div className="team-cell-container">
-                                        <img 
-                                            src={time.emblema_url} 
-                                            alt={`Emblema do ${time.nome}`}
-                                            className="team-emblem" 
-                                        />
-                                        <span>{time.nome}</span>
-                                    </div>
-                                </td>
-                                <td className="col-points">{time.P}</td>
-                                <td>{time.J}</td>
-                                <td>{time.V}</td>
-                                <td>{time.E}</td>
-                                <td>{time.D}</td>
-                                <td>{time.GP}</td>
-                                <td>{time.GC}</td>
-                                <td className={`col-sg ${time.SG > 0 ? 'positive-sg' : (time.SG < 0 ? 'negative-sg' : '')}`}>
-                                    {time.SG}
-                                </td>
-                                <td className="col-form">
-                                    <div className="recent-form-container">
-                                        {time.ultimosResultados && time.ultimosResultados.slice(-5).map((res, i) => (
-                                            getResultElement(res, i)
-                                        ))}
-                                    </div>
-                                </td>
-                            </tr>
-                        ))}
-                    </tbody>
-                </table>
+                <div className="table-responsive-wrapper">
+                    <table className="score-table">
+                        {renderHeader(['Pos', 'Time', 'P', 'J', 'V', 'E', 'D', 'GP', 'GC', 'SG', 'Últimos 5'])}
+                        <tbody>
+                            {tabelaClassificacao.map((time, index) => (
+                                <tr key={time.id}>
+                                    <td className="col-pos">{getPositionElement(index)}</td>
+                                    <td className="col-time">
+                                        <div className="team-cell-container">
+                                            <img 
+                                                src={time.emblema_url} 
+                                                alt={`Emblema do ${time.nome}`}
+                                                className="team-emblem" 
+                                            />
+                                            <span>{time.nome}</span>
+                                        </div>
+                                    </td>
+                                    <td className="col-points">{time.P}</td>
+                                    <td>{time.J}</td>
+                                    <td>{time.V}</td>
+                                    <td>{time.E}</td>
+                                    <td>{time.D}</td>
+                                    <td>{time.GP}</td>
+                                    <td>{time.GC}</td>
+                                    <td className={`col-sg ${time.SG > 0 ? 'positive-sg' : (time.SG < 0 ? 'negative-sg' : '')}`}>
+                                        {time.SG}
+                                    </td>
+                                    <td className="col-form">
+                                        <div className="recent-form-container">
+                                            {time.ultimosResultados && time.ultimosResultados.slice(-5).map((res, i) => (
+                                                getResultElement(res, i)
+                                            ))}
+                                        </div>
+                                    </td>
+                                </tr>
+                            ))}
+                        </tbody>
+                    </table>
+                </div>
             </div>
 
             {/* --- Seção de Rodadas --- */}
@@ -239,7 +241,7 @@ export default function Tabela() {
             </div>
 
             {/* --- Rankings de Gols e Assistências --- */}
-            <div style={{ display: 'flex', justifyContent: 'space-between', gap: '30px' }}>
+            <div className="rankings-grid" style={{ display: 'flex', justifyContent: 'space-between', gap: '30px' }}>
                 
                 {/* Artilharia */}
                 <div style={{ flex: 1 }}>
@@ -293,7 +295,7 @@ export default function Tabela() {
             </div>
 
             {/* --- Rankings de Cartões --- */}
-            <div style={{ display: 'flex', justifyContent: 'space-between', gap: '30px', marginTop: '40px' }}>
+            <div className="rankings-grid" style={{ display: 'flex', justifyContent: 'space-between', gap: '30px', marginTop: '40px' }}>
                 
                 {/* Cartões Amarelos */}
                 <div style={{ flex: 1 }}>

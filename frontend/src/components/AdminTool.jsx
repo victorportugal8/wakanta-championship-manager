@@ -391,7 +391,7 @@ export default function AdminTool() {
                 1. Agendar Rodada (Modo Múltiplo)
             </h2>
             <form onSubmit={handleAgendarRodada}>
-                <div className="admin-form-group">
+                <div className="admin-form-group form-row-flex">
                     <div style={{ marginBottom: '20px' }}>
                         <label style={{ fontWeight: 'bold', color: '#e0e0e0', marginRight: '10px' }}>
                             Agendar Rodada Nº:
@@ -469,7 +469,7 @@ export default function AdminTool() {
                 2. Lançar Resultado da Partida
             </h2>
             <form onSubmit={handleSalvarResultado}>
-                <div className="admin-form-group">
+                <div className="admin-form-group form-row-flex">
                     <h3 style={{ marginTop: 0, color: '#e0e0e0' }}>Selecione a Partida Agendada</h3>
                     <select 
                         className="admin-select"
@@ -487,7 +487,7 @@ export default function AdminTool() {
 
                 {selectedMatchId && (
                     <>
-                        <div className="admin-form-group">
+                        <div className="admin-form-group form-row-flex">
                             <label style={{ fontWeight: 'bold', color: '#e0e0e0', display: 'block', marginBottom: '5px' }}>
                                 Placar Final:
                             </label>
@@ -514,7 +514,7 @@ export default function AdminTool() {
                             </div>
                         </div>
 
-                        <div className="admin-form-group">
+                        <div className="admin-form-group form-row-flex">
                             <h3 style={{ marginTop: 0, color: '#e0e0e0', borderBottom: '1px solid #333', paddingBottom: '10px' }}>
                                 Eventos (Gols, Assistências, Cartões)
                             </h3>
@@ -576,7 +576,7 @@ export default function AdminTool() {
             </h2>
             <p>Adicione novos times ao campeonato. (Para removê-los, você ainda precisa editar o JSON manualmente).</p>
 
-            <div className="admin-form-group">
+            <div className="admin-form-group form-row-flex">
                 <h3 style={{ marginTop: 0, color: '#e0e0e0' }}>Times Atuais no Sistema ({times.length})</h3>
                 <ul style={{ maxHeight: '150px', overflowY: 'auto', paddingLeft: '20px', margin: 0, fontSize: '0.9em' }}>
                     {times.map(t => <li key={t.id} style={{ marginBottom: '5px' }}>
@@ -587,7 +587,7 @@ export default function AdminTool() {
             </div>
 
             <form onSubmit={handleAdicionarTime}>
-                <div className="admin-form-group">
+                <div className="admin-form-group form-row-flex">
                     <h3 style={{ marginTop: 0, color: '#e0e0e0' }}>Adicionar Novo Time</h3>
                     <div style={{ marginBottom: '15px' }}>
                         <label style={{ fontWeight: 'bold', color: '#e0e0e0', display: 'block', marginBottom: '5px' }}>Nome do Time:</label>
@@ -630,7 +630,7 @@ export default function AdminTool() {
             </h2>
             <p>Adicione novos jogadores e associe-os a um time existente.</p>
 
-            <div className="admin-form-group">
+            <div className="admin-form-group form-row-flex">
                 <h3 style={{ marginTop: 0, color: '#e0e0e0' }}>Jogadores Atuais ({jogadores.length})</h3>
                 <div style={{ maxHeight: '200px', overflowY: 'auto', padding: '10px', backgroundColor: '#121212', borderRadius: '4px' }}>
                     {jogadoresPorTime.map(time => (
@@ -650,7 +650,7 @@ export default function AdminTool() {
             </div>
 
             <form onSubmit={handleAdicionarJogador}>
-                <div className="admin-form-group">
+                <div className="admin-form-group form-row-flex">
                     <h3 style={{ marginTop: 0, color: '#e0e0e0' }}>Adicionar Novo Jogador</h3>
                     
                     <div style={{ marginBottom: '15px' }}>
