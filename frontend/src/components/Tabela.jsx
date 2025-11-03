@@ -272,7 +272,7 @@ export default function Tabela() {
                 <div style={{ flex: 1 }}>
                     <h2>👟 Rei das Assistências (Top 10)</h2>
                     <table className="score-table">
-                        {renderHeader(['Pos', 'Jogador', 'Time', 'Assists'])}
+                        {renderHeader(['Pos', 'Jogador', 'Time', 'AST'])}
                         <tbody>
                             {rankings.assistencias.slice(0, 10).map((jogador, index) => (
                                 <tr key={jogador.jogadorId}>
