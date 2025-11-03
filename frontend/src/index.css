@@ -443,15 +443,15 @@ h1, h2, h3 {
     /* 2. Ativa a rolagem horizontal para tabelas */
     .table-responsive-wrapper {
         width: 100%;
-        overflow-x: auto; /* A MÁGICA ACONTECE AQUI */
+        overflow-x: auto;
         -webkit-overflow-scrolling: touch; /* Rolagem suave em iOS */
         border: 1px solid #333; /* Adiciona uma borda para indicar que é 'rolável' */
         border-radius: 8px;
     }
     
     /* Força a tabela a manter sua largura, ativando a rolagem */
-    .score-table {
-        min-width: 800px; /* Garante que a tabela transborde e ative o scroll */
+    .table-responsive-wrapper .score-table {
+        min-width: 800px; /* Força a rolagem horizontal */
     }
     
     /* 3. Faz os rankings ficarem em 1 coluna (empilhados) */
@@ -474,10 +474,4 @@ h1, h2, h3 {
         width: 100%; /* Garante que todos os itens preencham a largura */
         margin-right: 0;
     }
-
-    /* * 5. (BÔNUS) Os seus Cards de Rodada!
-     * O seu CSS para .recent-matches-container 
-     * JÁ É RESPONSIVO! Ele usa 1 coluna por padrão e muda
-     * para 2 colunas em telas > 768px. Não precisamos mexer aqui.
-     */
 }
