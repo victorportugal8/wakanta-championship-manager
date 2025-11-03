@@ -309,6 +309,41 @@ export default function AdminTool() {
         salvarDados(novosDados, `Jogador "${novoJogadorObjeto.nome}" adicionado!`);
     };
 
+    // --- Handlers da Seção 5: Zona de Perigo ---
+
+    /**
+     * Limpa completamente o JSON, resetando o campeonato.
+     */
+    const handleLimparBase = () => {
+        // Primeira Confirmação
+        const confirm1 = window.confirm(
+            "ATENÇÃO: AÇÃO IRREVERSÍVEL!\n\nVocê tem certeza que deseja apagar TODOS os dados do campeonato?\n\n(Times, Jogadores, Partidas e Resultados serão perdidos.)"
+        );
+        if (!confirm1) {
+            alert("Ação cancelada.");
+            return;
+        }
+
+        // Segunda Confirmação (para evitar cliques acidentais)
+        const confirm2 = window.confirm(
+            "CONFIRMAÇÃO FINAL:\n\nTem certeza ABSOLUTA? Os dados não podem ser recuperados."
+        );
+        if (!confirm2) {
+            alert("Ação cancelada.");
+            return;
+        }
+
+        // Define o JSON Vazio
+        const emptyData = {
+          "times": [],
+          "partidas": [],
+          "jogadores": []
+        };
+
+        // Chama a função de salvamento existente
+        salvarDados(emptyData, "Base de dados limpa com sucesso! O campeonato foi reiniciado.");
+    };
+
     // --- 5. HANDLERS DE EVENTOS ---
     
     const handleAgendamentoChange = (index, field, value) => {
@@ -706,6 +741,27 @@ export default function AdminTool() {
                     </button>
                 </div>
             </form>
+
+            {/* --- SEÇÃO 5: ZONA DE PERIGO --- */}
+            <h2 style={{ borderBottom: '2px solid #333', paddingBottom: '10px', marginTop: '30px', color: '#dc3545' }}>
+                5. Zona de Perigo
+            </h2>
+            <div className="admin-form-group">
+                <h3 style={{ marginTop: 0, color: '#e0e0e0' }}>Reiniciar Campeonato</h3>
+                <p style={{ color: '#ccc', fontSize: '0.9em' }}>
+                    Isto irá apagar permanentemente todos os times, jogadores e resultados do seu <code>campeonato.json</code>.
+                    Use esta função apenas se quiser começar um campeonato totalmente novo do zero.
+                </p>
+                <button 
+                    type="button" 
+                    className="btn-primary" 
+                    style={{ backgroundColor: '#dc3545', color: '#ffffff', border: '1px solid #ff5252' }}
+                    onClick={handleLimparBase}
+                    disabled={isSaving}
+                >
+                    {isSaving ? 'Aguarde...' : 'Limpar Base de Dados (Ação Irreversível)'}
+                </button>
+            </div>
         </div>
     );
 }
