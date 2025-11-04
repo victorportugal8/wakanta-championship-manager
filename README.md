@@ -59,6 +59,8 @@ O sistema é dividido em duas áreas: uma **Área Pública (Vitrine)** para todo
     
     * **Lançamento de Resultados:** O admin seleciona uma *partida previamente agendada* em um menu e preenche o placar final e todos os eventos (gols, assistências, cartões).
 
+    * **Reinício do Campeonato:** Uma *"Zona de Perigo"* permite ao administrador **limpar completamente a base de dados** (apagar todos os times, jogadores e partidas) com segurança (após uma dupla confirmação), reiniciando o  `campeonato.json` no Vercel Blob para um estado vazio.
+
 ## 🚀 Primeiros Passos (Para Desenvolvedores)
 
 1. Clone este repositório.
