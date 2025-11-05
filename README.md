@@ -49,6 +49,8 @@ O sistema é dividido em duas áreas: uma **Área Pública (Vitrine)** para todo
 
     O Painel de Gerenciamento (`AdminTool.jsx`) é um **CMS** completo que permite ao administrador controlar 100% do campeonato sem editar arquivos ou fazer novos `deploys`.
 
+    * **Autenticação Segura:** O acesso à rota `/admin` é agora protegido por um sistema de "Segredo Compartilhado" (Shared Secret). O painel só é renderizado após o usuário inserir uma senha mestra, que é armazenada de forma segura nas *Vercel Environment Variables* (`VITE_ADMIN_PASSWORD`). O login persiste no navegador usando `localStorage` para manter o acesso após recarregar a página.
+
     * **Salvamento Instantâneo:** Qualquer ação no painel (adicionar time, salvar resultado) chama a **API** (`POST /api/json-handler`), que **sobrescreve** o `campeonato.json` no **Vercel Blob**. O site público refletirá as mudanças no próximo recarregamento de página.
 
     * **Gerenciador de Times:** Permite ao admin **cadastrar novos times** (nome, emblema) diretamente pela interface.
