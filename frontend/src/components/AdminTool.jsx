@@ -1,9 +1,20 @@
 import { useState, useMemo, useEffect } from 'react';
 // Importa as funções de cálculo, mas NÃO os dados
 // import { calcularClassificacao, calcularRankingsIndividuais } from '../utils/calculadora';
+// A senha secreta é importada das variáveis de ambiente e o Vite substitui esta variável no momento do build
+const ADMIN_PASSWORD = import.meta.env.VITE_ADMIN_PASSWORD;
 
 // Componente principal da ferramenta de administração
 export default function AdminTool() {
+
+    // --- ESTADO DE AUTENTICAÇÃO ---
+    // Checa se o usuário JÁ ESTÁ logado (do localStorage)
+    const [isAuthenticated, setIsAuthenticated] = useState(
+        localStorage.getItem('admin_logged_in') === 'true'
+    );
+
+    const [passwordInput, setPasswordInput] = useState('');
+    const [loginError, setLoginError] = useState('');
     
     // --- ESTADOS DE DADOS E CARREGAMENTO ---
     const [dadosCampeonato, setDadosCampeonato] = useState(null);
@@ -41,6 +52,11 @@ export default function AdminTool() {
     // --- 1. BUSCAR DADOS (useEffect) ---
     // Busca os dados da API quando o componente carrega
     useEffect(() => {
+        // Só busca os dados SE estiver autenticado
+        if (!isAuthenticated) {
+            setLoading(false); // Para o loading se não estiver logado
+            return; 
+        }
         const fetchData = async () => {
             try {
                 const response = await fetch('/api/json-handler');
@@ -62,7 +78,7 @@ export default function AdminTool() {
         };
 
         fetchData();
-    }, []); // Roda uma vez
+    }, [isAuthenticated]); // Roda uma vez e depende do estado de autenticação
 
     // --- 2. DADOS DERIVADOS (useMemo) ---
     // Os dados agora vêm do 'dadosCampeonato' do estado
@@ -397,8 +413,56 @@ export default function AdminTool() {
         setNovoJogador(prev => ({ ...prev, [name]: value }));
     };
 
+    // --- NOVA FUNÇÃO DE LOGIN ---
+    const handleLogin = (e) => {
+        e.preventDefault();
+        setLoginError(''); // Limpa erros antigos
+
+        if (passwordInput === ADMIN_PASSWORD) {
+            // SUCESSO!
+            setIsAuthenticated(true);
+            // Salva no localStorage para persistir o login (F5)
+            localStorage.setItem('admin_logged_in', 'true');
+        } else {
+            // FALHA!
+            setLoginError('Senha incorreta.');
+        }
+    };
+
 
     // --- 6. RENDERIZAÇÃO ---
+
+    // --- 1. RENDERIZA O LOGIN SE NÃO ESTIVER AUTENTICADO ---
+    if (!isAuthenticated) {
+        return (
+            <div className="container" style={{ maxWidth: '500px', margin: '100px auto' }}>
+                <h1 style={{ textAlign: 'center', color: '#00bcd4' }}>Área Restrita</h1>
+                <p style={{ textAlign: 'center', color: '#ccc' }}>Insira a senha de administrador para continuar.</p>
+                
+                <form onSubmit={handleLogin}>
+                    <div className="admin-form-group">
+                        <label style={{ fontWeight: 'bold', color: '#e0e0e0', display: 'block', marginBottom: '5px' }}>
+                            Senha de Acesso:
+                        </label>
+                        <input 
+                            className="admin-input" 
+                            type="password" 
+                            name="password" 
+                            value={passwordInput}
+                            onChange={(e) => setPasswordInput(e.target.value)}
+                            style={{ width: '100%' }}
+                        />
+                        {loginError && (
+                            <p style={{ color: '#ff5252', marginTop: '10px' }}>{loginError}</p>
+                        )}
+                        <button type="submit" className="btn-primary" style={{ marginTop: '20px', width: '100%' }}>
+                            Entrar
+                        </button>
+                    </div>
+                </form>
+            </div>
+        );
+    }
     
     // (Tratamento de Loading e Error)
     if (loading) {
